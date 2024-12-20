@@ -1,0 +1,513 @@
+# Básicos de R
+
+R es un lenguaje de programación ampliamente usado en estadística, debido a la gran cantidad de desarrollo que se ha hecho, el cual lo convierte en una herramienta muy útil para procesamiento, visualización y modelamiento de datos. Para empezar a utilizarlo hay que saber que funciona a través de estructuras de datos conocidas como objetos. A continuación se presentan los principales tipos de elementos y tipos de objetos.
+
+<br>
+
+## Tipos de elementos
+
+### Numéricos (numeric)
+
+Se refiere a números con parte entera y parte decimal. Aunque se defina unicamente la parte entera, R asume la parte decimal como 0.
+
+```{r}
+x <- 4.5
+class(x)
+x <- 4
+class(x)
+```
+
+### Enteros (integer)
+
+Se refiere a números unicamente con parte entera. Para especificar que es un entero se debe poner el sufijo *L*, de lo contrario R lo interpreta como `numeric`.
+
+```{r}
+x <- 4L
+class(x)
+```
+
+### Cadenas de texto (character)
+
+```{r}
+x <- "Ejemplo"
+class(x)
+```
+
+### Valores lógicos (logical)
+
+Pueden ser: `TRUE` (verdadero) o `FALSE` (falso).
+
+```{r}
+x <- TRUE
+class(x)
+```
+
+### Factores (factor)
+
+Permiten definir varibles categóricas, es decir, es adecuado cuando se conocen las posibles categorias que toma la variable.
+
+```{r}
+colores <- c("rojo", "azul", "verde", "rojo", "verde", "azul")
+x <- factor(colores)
+levels(x)
+class(x)
+```
+
+### Fechas (date)
+
+Permiten representar la fecha exacta deseada deacuerdo al formato que se indique.
+
+```{r}
+as.Date("2008-09-15", format = "%Y-%m-%d")
+as.Date("March/15: 1992", format = "%B/%d: %Y")
+```
+
+Para acceder a un detalle de la fecha especificada se emplea el comando `format`.
+
+```{r}
+format(as.Date("2024-11-26"), "%Y")
+```
+
+A continuación se presentan los símbolos para establecer el formato.
+
+
+| Símbolo  | Descripción                         |
+|----------|-------------------------------------|
+| `%Y`     | Año con cuatro dígitos             |
+| `%y`     | Año con dos dígitos                |
+| `%m`     | Mes en formato numérico (01-12)    |
+| `%b`     | Nombre abreviado del mes           |
+| `%B`     | Nombre completo del mes            |
+| `%d`     | Día del mes (01-31)                |
+| `%a`     | Nombre abreviado del día de la semana |
+| `%A`     | Nombre completo del día de la semana |
+| `%j`     | Día del año (001-366)              |
+| `%u`     | Día de la semana (1 = lunes, 7 = domingo) |
+| `%w`     | Día de la semana (0 = domingo, 6 = sábado) |
+| `%H`     | Hora (00-23)                       |
+| `%I`     | Hora (01-12, formato AM/PM)        |
+| `%p`     | AM o PM                            |
+| `%M`     | Minuto (00-59)                     |
+| `%S`     | Segundo (00-59)                    |
+
+<br>
+
+## Regla de coerción
+
+R coerciona los elementos implícitamente para realizar operaciones en caso de ser necesario, esto quiere decir, que los transforma de un tipo a otro.
+
+El orden de coerción es: **lógico -> entero -> numérico -> cadena de texto (logical -> integer -> numeric -> character)**. Un ejemplo claro lo tenemos al hacer la siguiente comparación, que nos da como resultado `TRUE`.
+
+```{r}
+1 == "1"
+```
+
+Esto es muy importante tenerlo en cuenta para definir o realizar comparaciones entre objetos o elementos, ya que de lo contrario, se pueden producir resultados indeseados.
+
+## Regla de reciclaje de valores (completitud)
+
+Cuando se especifican menos valores de lo que se requieren, R completa los espacios repitiendo la secuencia de valores dados. Se presenta un ejemplo claro en la siguiente sección (*matrices*).
+
+<br>
+
+## Tipos de objetos
+
+Son elementos organizados de diferentes maneras con el fin de manejarlos estructuradamente.
+
+### Vectores (vector)
+
+Son colecciones de elementos del mismo tipo.
+
+```{r}
+numeros <- c(1, 2, 3, 4)
+class(numeros)
+textos <- c("A", "B", "C", 1)
+textos
+class(textos)
+```
+
+Como se observa, por la regla de coerción, los elementos en `textos` son todos del tipo `character`.
+
+### Matrices (matrix)
+
+Son arreglos bidimensionales del mismo tipo. Se pueden formar a partir de vectores, teniendo en cuenta que las dimensiones sean adecuadas.
+
+```{r}
+matriz <- matrix(1:8, nrow = 2, ncol = 4)
+matriz
+matriz2 <- rbind(numeros,textos)
+matriz2
+```
+
+Si las dimensiones no coinciden se aplica la regla de completitud. Por ejemplo:
+
+```{r}
+# Se define un vector de longitud 3
+vector <- c(1, 2, 3)
+# Se define una matriz de dimension 2 x 3
+matriz <- matrix(vector, nrow = 2, ncol = 3)
+matriz
+# Se define una matriz de dimension 2 x 4 
+# la cual arroja una advertencia, ya que las longitudes no son múltiplos
+matriz <- matrix(vector, nrow = 2, ncol = 4)
+matriz
+```
+
+### Arreglos (array)
+
+Son la generalización de las matrices a más dimensiones. Se pueden formar a partir de vectores y/o matrices, teniendo en cuenta que las dimensiones sean adecuadas o se aplicará la regla de completitud. 
+
+```{r}
+arreglo <- array(1:8, dim = c(2, 2, 2))
+arreglo
+arreglo2 <- array(c(matriz,matriz2), dim = c(2, 4, 2))
+arreglo2
+```
+
+### Data frames (data.frame)
+
+Son estructuras bidimensionales que permiten columnas de diferentes tipos. Se emplean usualmente para representar tablas de datos cuando se tienen variables numéricas y categoricas simultáneamente.
+
+```{r}
+df <- data.frame(
+  ID = c(1, 2, 3),
+  Nombre = c("Ana", "Luis", "Juan"),
+  Edad = c(23, 30, 45),
+  Sexo= factor(c("Femenino","Masculino","Masculino"))
+)
+df
+```
+
+### Listas (list)
+
+Colección de elementos que puede ser de diferentes tipos, incluso otras colecciones de elementos como matrices o data frames.
+
+```{r}
+lista <- list(nombre = "Juan", edad = 25, notas = c(8, 9, 10))
+lista
+lista2 <- list(numeros, matriz, arreglo, df)
+lista2
+```
+
+<br>
+
+## Convertir a otro tipo de objeto
+
+Esto se puede hacer mediante las funciones `as.numeric`, `as.character`, `as.factor`, `as.vector`, `as.matrix`, `as.array`, `as.data.frame`, `as.list`, siempre que sean compatibles teniendo en cuenta la regla de coerción. Por ejemplo:
+
+```{r}
+as.numeric("1")
+as.matrix(df)
+```
+
+<br>
+
+## Tipos de datos especiales
+
+* NA: Representa valores faltantes o desconocidos.
+
+* NULL: Representa que un objeto esta vacio.
+
+* NaN (Not a number): Representa un valor no numérico derivado de operaciones inválidas.
+
+```{r}
+0/0
+```
+
+* Inf: Representa infinito
+
+```{r}
+1/0
+```
+
+<br>
+
+## Crear secuencias numéricas 
+
+Hay diversas maneras de crear secuencias numéricas, útiles por ejemplo para definir indices, rangos para iterar sobre objetos, entre otras.
+
+```{r}
+# Secuencia del 1 al 10
+seq1 <- 1:10
+seq1
+# Secuencia del 1 al 10 con paso 2
+seq2 <- seq(from = 1, to = 10, by = 2)
+seq2
+# Secuencia del 1 al 10 con 5 elementos
+seq3 <- seq(from = 1, to = 10, length.out = 5)
+seq3
+# Repetir el número 5, 10 veces
+rep1 <- rep(5, times = 10)
+rep1
+# Repetir la secuencia 1:3, 4 veces
+rep2 <- rep(1:3, times = 4)
+rep2
+# Repetir cada número en 1:3 dos veces
+rep3 <- rep(1:3, each = 2)
+rep3
+# Secuencia aleatoria del 1 al 10
+random_seq <- sample(1:10)
+random_seq
+```
+
+<br>
+
+## Operadores
+
+### Operadores aritméticos
+
+Permiten realizar operaciones aritméticas entre números. 
+
+| Operador | Descripción                     | Ejemplo           | Resultado  |
+|----------|---------------------------------|-------------------|------------|
+| `+`      | Suma                           | `6 + 3`           | `9`        |
+| `-`      | Resta                          | `6 - 4`           | `2`        |
+| `*`      | Multiplicación                 | `4 * 3`           | `12`       |
+| `/`      | División                       | `5 / 2`           | `2.5`      |
+| `^` o `**` | Potenciación                 | `2^3` o `2**3`    | `8`        |
+| `%%`     | Módulo (resto de la división)  | `5 %% 2`          | `1`        |
+| `%/%`    | División entera                | `5 %/% 2`         | `2`        |
+
+El orden en que se ejecutan los operadores son: primero lo que esta en parentesis `()`, seguido de `^`, `**` -> `*`, `/`, `%%`, `%/%` -> `+`, `-`.
+
+```{r}
+resultado <- 3 + 5 * 2 ^ 2 - (8 / 4)
+
+# Paso a paso:
+# 1. Paréntesis: (8 / 4) = 2
+# 2. Exponentes: 2 ^ 2 = 4
+# 3. Multiplicación: 5 * 4 = 20
+# 4. Suma y resta: 3 + 20 - 2 = 21
+
+resultado
+```
+
+### Operadores lógicos
+
+Permiten realizar operaciones entre valores lógicos y dan como resultado un valor lógico, como se muestra a continuación.
+
+| Operador  | Descripción                           | Ejemplo            | Resultado  |
+|-----------|---------------------------------------|--------------------|------------|
+| `&`       | AND lógico (elemento por elemento)   | `c(TRUE, FALSE) & c(TRUE, TRUE)` | `TRUE, FALSE` |
+| `|`       | OR lógico (elemento por elemento)    | `c(TRUE, FALSE) | c(FALSE, TRUE)` | `TRUE, TRUE`  |
+| `&&`      | AND lógico (evaluación de primer elemento) | `TRUE && FALSE` | `FALSE`    |
+| `||`      | OR lógico (evaluación de primer elemento)  | `TRUE || FALSE` | `TRUE`     |
+| `!`       | Negación lógica                      | `!TRUE`            | `FALSE`    |
+| `xor()`   | OR exclusivo (XOR)                   | `xor(TRUE, FALSE)` | `TRUE`     |
+
+### Operadores relacionales
+
+Permiten comparar objetos o elementos y devuelven como resultado un valor lógico.
+
+| Operador | Descripción                       | Ejemplo        | Resultado  |
+|----------|-----------------------------------|----------------|------------|
+| `<`      | Menor que                        | `5 < 3`        | `FALSE`    |
+| `>`      | Mayor que                        | `5 > 3`        | `TRUE`     |
+| `<=`     | Menor o igual que                | `5 <= 5`       | `TRUE`     |
+| `>=`     | Mayor o igual que                | `5 >= 7`       | `FALSE`    |
+| `==`     | Igual a                          | `5 == 5`       | `TRUE`     |
+| `!=`     | Diferente de                     | `5 != 3`       | `TRUE`     |
+
+Cabe destacar que el operador `==` se emplea para comparar, y el resultado es un valor lógico. 
+
+### Operadores de asignación
+
+Los operadores de asignación son `=` y `<-`. Es una buena práctica utilizar `<-` para asignar valores a variables, o guardar objetos y `=` únicamente para definir el valor de los argumentos que recibe una función. Cabe destacar que al asignar un valor a una variable que ya se había definido, se conserva el valor más reciente. Por ejemplo:
+
+```{r}
+asignacion <- "Hola"
+asignacion <- "¿Cómo estás?"
+asignacion
+```
+
+<br>
+
+## Estructuras de control
+
+### if, else
+
+`if` es una estructura de control que permite ejecutar un bloque de código cuando la condición es verdadera.
+
+```{r}
+#| eval: false
+if(Condición) {
+  operaciones_si_la_condición_es_TRUE
+}
+```
+
+`else` permite que adicionalmente, se ejecute un bloque de código cuando la condición es falsa.
+
+```{r}
+#| eval: false
+if(condición) {
+  operaciones_si_la_condición_es_TRUE
+} else {
+  operaciones_si_la_condición_es_FALSE
+}
+```
+
+`ifelse` permite simplicar el condicional utilizando un enfoque vectorizado si se desea devolver un único valor.
+
+```{r}
+#| eval: false
+isfelse(condición, valor_si_la_condición_es_TRUE, valor_si_la_condición_es_FALSE)
+```
+
+Por ejemplo:
+
+```{r}
+numero <- -5
+
+if (numero > 0) {
+  print("El número es positivo")
+} else if (numero < 0) {
+  print("El número es negativo")
+} else {
+  print("El número es cero")
+}
+```
+
+```{r}
+temperaturas <- c(25, 30, 18, 15, 40, 10)
+clasificacion <- ifelse(temperaturas >= 30, "Calor", "Fresco")
+clasificacion
+```
+
+### For
+
+`for` es una estructura que control que permite ejecutar repetidamente un bloque de código.
+
+```{r}
+#| eval: false
+for (variable in secuencia) {
+  código_a_ejecutar_en_cada_iteración
+}
+```
+
+Para ilustrar como funciona el comando `for`, se presentan dos ejemplos útiles en la práctica: como introducir elementos a una matriz y a una lista.
+
+```{r}
+# Crear una matriz vacía de 3 filas y 4 columnas
+ej_matriz <- matrix(NA, nrow = 3, ncol = 4)
+
+# Llenar la matriz fila por fila
+contador <- 1 # Valor incial
+for (i in 1:nrow(ej_matriz)) { # para cada i = 1,2,3
+  for (j in 1:ncol(ej_matriz)) { # para cada j = 1,2,3,4
+    ej_matriz[i, j] <- contador
+    contador <- contador + 1 # Operación para actualizar el valor
+  }
+}
+matriz
+```
+
+```{r}
+# Inicializar la lista vacía
+ej_lista <- list()
+
+
+# Agregar elementos a la lista con un bucle for
+for (i in 1:4) { 
+  ej_lista[[i]] <- i^2  # Por ejemplo, el cuadrado del índice
+}
+ej_lista
+```
+
+### while
+
+`while` es una estructura de control que permite ejecutar un bloque de código repetidamente mientras la condición sea verdadera.
+
+```{r}
+#| eval: false
+while(condicion) {
+  operaciones_mientras_la_condición_es_TRUE
+}
+```
+
+Por ejemplo:
+
+```{r}
+limite <- 3
+contador <- 0
+
+while(contador < limite) {
+  print(paste(limite, ">", contador))
+  contador <- contador + 1
+}
+```
+
+> Nota: Es importante tener cuidado con la condición, ya que si en ningún momento es falsa, se puede generar un bucle infinito.
+
+### break y next
+
+`break` permite detener la iteración de un bucle, y `next` saltar una iteración del bucle.
+
+```{r}
+numero <- 10
+
+while(numero > 0) {
+  if(numero == 4) {
+    break
+  }
+  numero <- numero - 1
+}
+
+numero
+```
+
+```{r}
+for(i in 1:4) {
+  if(i == 3) {
+    next
+  }
+  print(i)
+}
+```
+
+<br>
+
+## Funciones
+
+Una función es un bloque de código reutilizable que realiza una tarea específica. Una función toma una entrada (argumentos), realiza una serie de operaciones y, opcionalmente, devuelve un resultado.
+
+```{r}
+#| eval: false
+nombre <- function(argumentos) {
+  operaciones
+  return(resultado)
+}
+```
+
+Por ejemplo, a continuación se crea una función que indica si un número es par.
+
+```{r}
+es_par <- function(numero) {
+  if (numero %% 2 == 0) {
+    return(TRUE)  # El número es par
+  } else {
+    return(FALSE) # El número no es par
+  }
+}
+
+es_par(4) 
+es_par(7)
+```
+
+Esto es particularmente útil cuando se necesita utilizar varias veces un bloque de código que cumple una función determinada, por ejemplo para procesar imagenes o realizar transformaciones a tablas de datos. Por supuesto, tanto en el paquete base de R, como en paquetes que requieren instalación vienen establecidas gran cantidad de funciones que otras personas han desarrollado. Para la mayoría de tareas necesarias en el análisis de datos ya existen funciones que permiten realizarlas.
+
+También es posible crear funciones anónimas empleando `\`, y son útiles como argumento de otra función o para tareas rápidas.
+
+```{r}
+r = \(x) x + 1
+r(6)
+```
+
+Para ampliar la información presentada en este capítulo y conocer más acerca del funcionamiento de R, se recomienda consultar los manuales disponibles en la página oficial. Para acceder de click [aquí.](https://cran.r-project.org/manuals.html){target="_blank"}
+
+
+
+
+
+
+
+

@@ -1,0 +1,121 @@
+# ¿Cómo importar datos?
+
+A continuación se muestra el código para importar datos almacenados en diferentes tipos de archivos. Se presenta una opción empleando librerias que requieren instalación, y en los casos en los que es posible, empleando el paquete base de R. Con el fin de ilustrar su funcionamiento se utilizará un ejemplo que contiene 5000 individuos (filas) 59 variables (columnas), con información de los aspirantes a la Universidad Nacional de Colombia. Por supuesto, en los respectivos casos se debe ajustar la ruta de los archivos y es posible modificar el nombre de la variable en la que se guarda la tabla de datos.
+
+```{r}
+#| eval: false
+#| echo: false
+
+library(UnalData)
+library(writexl)
+library(haven)
+library(dplyr)
+
+Base_prueba <- UnalData::Aspirantes %>% sample_n(5000)
+Base_prueba <- Base_prueba %>% 
+  rename(SNIES_UNIVERSIDAD=`SNIES UNIVERSIDAD`,
+         NOMBRE_UNIVERSIDAD=`NOMBRE UNIVERSIDAD`,
+         ANNO_TERMINACION=`AÑO_TERMINACION`)
+# Excel
+write_xlsx(Base_prueba, "Base_prueba_aspirantes.xlsx")
+# CSV
+write.csv(Base_prueba, "Base_prueba_aspirantes.csv", fileEncoding="UTF-8")
+# txt
+write.table(Base_prueba, "Base_prueba_aspirantes.txt", sep = ",", row.names = FALSE)
+# SPSS
+haven::write_sav(Base_prueba, "Base_prueba_aspirantes.sav")
+# SAS
+haven::write_sas(Base_prueba, "Base_prueba_aspirantes.sas7bdat")
+# Stata
+haven::write_dta(Base_prueba, "Base_prueba_aspirantes.dta")
+# Rdata
+```
+
+## Excel
+
+```{r}
+#| eval: false
+
+if (!require("readxl")) install.packages("readxl")
+library(readxl)
+Base_prueba_aspirantes <- read_excel(path="datos/Base_prueba_aspirantes.xlsx")
+```
+
+## CSV
+
+```{r}
+#| eval: false
+
+if (!require("readr")) install.packages("readr")
+library(readr)
+Base_prueba_aspirantes <- read_csv(file="datos/Base_prueba_aspirantes.csv")
+
+# Usando el paquete base
+Base_prueba_aspirantes <- read.csv(file="datos/Base_prueba_aspirantes.csv", encoding="UTF-8")
+```
+
+## txt
+
+```{r}
+#| eval: false
+
+if (!require("readr")) install.packages("readr")
+library(readr)
+Base_prueba_aspirantes <- read_csv(file="datos/Base_prueba_aspirantes.txt")
+
+# Usando el paquete base
+Base_prueba_aspirantes <- read.table(file="datos/Base_prueba_aspirantes.txt", header = TRUE, sep = ",")
+```
+
+## SPSS
+
+```{r}
+#| eval: false
+
+if (!require("haven")) install.packages("haven")
+library(haven)
+Base_prueba_aspirantes <- read_sav(file="datos/Base_prueba_aspirantes.sav")
+```
+
+## SAS
+
+```{r}
+#| eval: false
+
+if (!require("haven")) install.packages("haven")
+library(haven)
+Base_prueba_aspirantes <- read_sas(data_file="datos/Base_prueba_aspirantes.sas7bdat")
+```
+
+
+## Stata
+
+```{r}
+#| eval: true
+#| message: false
+
+if (!require("haven")) install.packages("haven")
+library(haven)
+Base_prueba_aspirantes <- read_dta(file="datos/Base_prueba_aspirantes.dta")
+```
+
+Todas las opciones generan como resultado un data frame como el siguiente.
+
+```{r}
+head(Base_prueba_aspirantes)
+```
+
+
+> Nota: Es importante que los nombres de las columnas no contengan caracteres especiales ni espacios para evitar errores, especialmente en los formatos de SPSS y SAS. Adicionalmente, es recomendable especificar la codificación UTF-8 para evitar que las tildes y otros caracteres se interpreten correctamente.
+
+Si se desea ampliar la información de las funciones empleadas para importar los archivos, se debe ingresar en la consola el nombre de la función antecedido por un signo de interrogación, por ejemplo: `?read_dta`. 
+
+Para ver el archivo dentro de *R studio* se emplea el comando `View(Base_prueba_aspirantes)`.
+
+![](img/View.png)
+
+Cabe destacar que también es posible importar los archivos en *R studio* desde el menú ubicado en la parte superior *File > Import Dataset*.
+
+![](img/Import_dataset.png)
+
+

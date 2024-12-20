@@ -1,0 +1,42 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "R en la gestión pública"
+  author: "Dirección Nacional de Planeación y Estadística"
+  date: today
+  date-format: iso
+  reader-mode: true
+  search: true
+  
+  favicon: 'img/Logotipo_UNAL.png'
+  page-footer:
+    left:
+      - text: "R en la gestión pública"
+    right:
+      - text: "Universidad Nacional de Colombia - DNPE"
+        url: https://unal.edu.co/
+  navbar:
+    logo: 'img/Logotipo_UNAL.png'
+    background: light
+        
+  sidebar:
+    logo: 'img/Logotipo_UNAL.png'
+    
+  chapters:
+    - index.qmd
+    - basicos_R.qmd
+    - importar_datos.qmd
+    - manipulacion_de_datos.qmd
+    - visualizacion.qmd
+
+format:
+  html:
+    css: [style_gitbook.css]
+    theme: lux
+    toc-depth: 4
+    toc-expand: 3
+
+
+

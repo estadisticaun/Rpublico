@@ -1,0 +1,5 @@
+# Cómo usar esta guía {.unnumbered}
+
+Este manual es una guía introductoria para quienes deseen utilizar R como herramienta en la gestión pública. Está organizado en capítulos temáticos que abarcan desde el manejo básico de objetos en R y la importación de datos, hasta gráficos y análisis más avanzados. Es ideal para aquellos que se inician en el análisis de datos con R y buscan una referencia completa y accesible.
+
+

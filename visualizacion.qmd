@@ -1,0 +1,459 @@
+# Visualización de datos
+
+A continuación, se presenta una guía de gráficos diseñada para explorar y describir el comportamiento de los datos. La guía está organizada según la cantidad y el tipo de variables que se desean visualizar. Se muestra el gráfico creado usando el paquete base de R y usando el paquete [*ggplot*](https://ggplot2.tidyverse.org/){target="_blank"}, el cual se instala mediante el comando `install.packages("ggplot2")`
+
+Para obtener información más detallada sobre el uso y las configuraciones adicionales de las funciones empleadas, se utiliza `?nombre_funcion` en la consola de R. Además, en el sitio web [R Charts](https://r-charts.com/es/){target="_blank"} se encuentra disponible una amplia variedad de gráficos y recursos de interés relacionados.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(ggplot2)
+library(stringr)
+library(tidyr)
+library(dplyr)
+library(readr)
+Base_prueba_aspirantes <- read_csv(file="datos/Base_prueba_aspirantes.txt") %>% filter(SEXO != "No binario") %>%
+  mutate(ESTRATO = as.factor(ESTRATO),
+         CAT_EDAD = as.factor(CAT_EDAD),
+         SEXO = as.factor(SEXO))
+```
+
+<br>
+
+## Gráficos univariados
+
+<br>
+
+### Variable categórica
+
+<br>
+
+#### Gráfico de barras verticales
+
+```{r}
+# Paquete base
+conteo <- table(Base_prueba_aspirantes$ESTRATO_ORIG) # Tabla de frecuencias
+
+barplot(conteo, # Datos
+        main = "Gráfico de barras por estrato", # Título
+        xlab = "", ylab = "Frecuencia", # Títulos de los ejes
+        ylim = c(0, max(conteo)*1.1), # Rango del eje y
+        col = "skyblue", # Color de las barras
+        space = 1, # Espacio entre las barras
+        las = 2) # Orientación de las etiquetas del eje X
+```
+
+
+```{r}
+# ggplot
+library(ggplot2)
+ggplot(Base_prueba_aspirantes, aes(x = ESTRATO_ORIG)) + # Datos y ejes
+    geom_bar(fill = "skyblue", color = "black", width = 0.5) + # Configuración de las barras
+    labs(title = "Gráfico de barras por estrato", x = "Estrato", y = "Frecuencia") + # Títulos
+    theme_minimal() + # Tema
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "top") 
+```
+
+<br>
+
+#### Gráfico de barras horizontales
+
+```{r}
+# Paquete base
+conteo <- sort(table(Base_prueba_aspirantes$DEP_NAC), decreasing = FALSE) # Tabla de frecuencias ordenada
+
+par(mar = c(5, 12, 1, 5)) # Ajusta las márgenes
+barplot_heights <- barplot(conteo, # Datos
+        horiz = TRUE, # Barras horizontales
+        las = 1, # Orientación de las etiquetas del eje X
+        col = "skyblue", border = "white", # Configuración de las barras
+        main = "Gráfico de barras por departamentos de nacimiento", # Título
+        xlab = "Frecuencia", ylab = "", # Títulos de los ejes
+        xlim = c(0, max(conteo)*1.1), # Rango del eje X
+        cex.names = 0.5, # Ajusta tamaño de etiquetas
+        cex.axis = 0.8,  # Ajusta tamaño de ejes
+        cex.main = 1.1)  # Ajusta tamaño del título
+text(x = conteo, # Etiquetas de la frecuencia
+     y = barplot_heights, # Altura correspondiente a las barras
+     labels = conteo, # Valores de frecuencia
+     cex = 0.6, # Tamaño de texto
+     pos = 4) # Posición del texto a la derecha
+```
+
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>%
+    mutate(DEP_NAC = stringr::str_wrap(DEP_NAC, width = 30)) %>% # Ajusta etiquetas largas con saltos de línea
+    count(DEP_NAC, sort = TRUE) %>% # Conteo
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(x = reorder(DEP_NAC, n), y = n)) + # Ejes
+    geom_bar(stat = "identity", fill = "skyblue") + # Configuración de las barras
+    geom_text(aes(label = round(n, 0)), hjust = -0.2, size = 3) + # Etiquetas del conteo
+    labs(title = "Gráfico de barras por departamentos de nacimiento", x = "", y = "Frecuencia") + # Títulos
+    scale_y_continuous(limits = c(0, max(conteo)*1.1)) + # Rango del eje X
+    coord_flip() + # Vuelve las barras horizontales
+    theme_minimal() + # Tema
+    theme(axis.text.y = element_text(angle = 0, hjust = 1, size = 6)) +
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "top") 
+```
+
+<br>
+
+#### Gráfico circular
+
+```{r}
+# Paquete base
+conteo <- table(Base_prueba_aspirantes$SEXO) # Tabla de frecuencias
+
+pie(conteo, # Datos
+    main = "Gráfico circular por sexo", # Título
+    col = c("skyblue","plum"), border= "white", # Colores
+    labels = paste(names(conteo), ":", round(prop.table(conteo) * 100, 2), "%"), # Etiquetas
+    cex = 1.1) # Tamaño de las etiquetas
+```
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>%
+    count(SEXO) %>% # Conteo
+    mutate(percentage = n / sum(n) * 100) %>% # Calculo del porcentaje
+ggplot(aes(x = "", y = percentage, fill = SEXO)) + # Ejes
+    geom_bar(stat = "identity") + 
+    coord_polar("y") + # Convierte a coordenadas polares
+    geom_text(aes(label = paste0(round(percentage, 2), "%")), 
+              position = position_stack(vjust = 0.5), size = 5) +  # Ajusta posición y tamaño de las etiquetas
+    labs(title = "Gráfico circular por sexo", fill = "Sexo") + # Títulos
+    scale_fill_manual(values = c("Hombres" = "skyblue", "Mujeres" = "plum")) + # Colores
+    theme_void() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "right") 
+```
+
+<br>
+
+### Variable cuantitativa
+
+<br>
+
+#### Histograma
+
+```{r}
+# Paquete base
+hist(Base_prueba_aspirantes$PTOTAL, # Datos
+     main = "Histograma del puntaje total", # Título
+     xlab = "Puntaje total", ylab = "Frecuencia", # Título de los ejes
+     xlim = c(-20,1000), # Rango del eje X
+     col = "skyblue", border = "white") # Color de las barras
+```
+
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>%
+    select(PTOTAL) %>% 
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(x = PTOTAL)) + # Eje
+    geom_histogram(binwidth = 50, fill = "skyblue", color = "white") + # Configuración de las barras
+    labs(title = "Histograma del puntaje total", x = "Puntaje total", y = "Frecuencia") + # Títulos
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "right")
+```
+
+<br>
+
+#### Gráfico de densidad
+
+```{r}
+# Paquete base
+densidad_edad <- density(Base_prueba_aspirantes$EDAD_MOD, na.rm = TRUE) # Calculo de la densidad
+
+plot(densidad_edad, # Datos
+     main = "Gráfico de densidad de la edad de los aspirantes", # Título
+     xlab = "Edad", ylab = "Densidad", # Títulos de los ejes
+     col = "blue",  # Color de la línea
+     lwd = 2, # Grosor de la línea
+     cex.main = 1.1, # Tamaño del título
+     cex.lab = 1, # Tamaño de las etiquetas de los ejes
+     cex.axis = 0.9) # Tamaño de los números en los ejes
+polygon(densidad_edad, col = "skyblue", border = "blue") # Agregar el área bajo la curva (relleno)
+```
+
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>% 
+    select(EDAD_MOD) %>% 
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(x = EDAD_MOD)) + # Ejes
+    geom_density(fill = "skyblue", color = "blue", alpha = 1) +  # Densidad con relleno y borde
+    labs(title = "Gráfico de densidad de la edad de los aspirantes", x = "Edad", y = "Densidad") + # Títulos
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"), 
+          axis.title = element_text(size = 12),                          
+          axis.text = element_text(size = 10))
+```
+
+<br>
+
+#### Boxplot
+
+```{r}
+# Paquete base
+boxplot(Base_prueba_aspirantes$PTOTAL, # Datos
+        main = "Boxplot del puntaje total", ylab = "Puntaje total", # Títulos
+        col = "skyblue", # Color de la caja
+        pch = 19, # Tipo de punto para los outliers
+        cex = 0.5) # Tamaño de los outliers
+```
+
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>%
+    select(PTOTAL) %>% 
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(y = PTOTAL)) + # Eje
+    geom_boxplot(fill = "skyblue", color = "black", # Configuración de la caja
+                 outlier.shape = 19) + # Configuración de datos atípicos
+    labs(title = "Boxplot del puntaje total", y = "Puntaje total") +
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"), 
+          axis.title = element_text(size = 12),                          
+          axis.text = element_text(size = 10))
+```
+
+<br>
+
+## Gráficos multivariados
+
+<br>
+
+### Variables categóricas
+
+<br>
+
+#### Gráfico de barras
+
+```{r}
+# Paquete base
+conteo <- table(Base_prueba_aspirantes$SEXO,
+                factor(Base_prueba_aspirantes$CAT_EDAD,levels = rev(levels(Base_prueba_aspirantes$CAT_EDAD)))) # Tabla de frecuencias
+
+par(mar = c(5, 10, 4, 2))  # Ajusta las márgenes
+bar_positions <- barplot(conteo, # Datos
+    beside = TRUE, # No apilar barras
+    horiz = TRUE, # Barras horizontales
+    col = c("skyblue", "plum"), border = "white", # Colores de las barras
+    main = "Gráfico de barras de los grupos de edad por sexo", # Título
+    xlab = "Frecuencia", ylab = "", # Títulos de los ejes
+    xlim = c(0, max(conteo)*1.1), # Rango del eje X
+    las = 1, # Orientación de las etiquetas del eje Y
+    cex.main = 1.2, cex.lab = 1, cex.axis = 0.7, cex.names = 0.8, # Tamaños
+    legend.text = TRUE, # Incluir leyenda
+    args.legend = list(x = "top", # Posición de la leyenda
+                  title = "", horiz = TRUE,
+                  bty = "n", # Sin borde en la leyenda
+                  cex = 0.9, # Tamaño del texto de la leyenda
+                  inset = -0.15)) # Ajusta el espacio hacia abajo si es necesario
+text(x = conteo, # Posición X
+     y = bar_positions,  # Posición en Y
+     labels = conteo, # Valores de frecuencia
+     cex = 0.6, pos = 4) # Tamaño y posición de las etiquetas
+```
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>% 
+    count(CAT_EDAD, SEXO, sort = TRUE) %>% # Conteo
+ggplot(aes(x = reorder(CAT_EDAD, n), y = n, fill = SEXO)) + # Ejes
+    geom_bar(stat = "identity", position = position_dodge(width = 0.9), width = 0.8) + # Configuración de las barras
+    geom_text(aes(label = round(n, 0)), position = position_dodge(width = 0.9), 
+              hjust = -0.2, size = 2.5) + # Configuración de la etiquetas de conteo
+    labs(title = "Gráfico de barras de los grupos de edad por sexo", # Título
+         x = "Grupo de edad", y = "Frecuencia", fill = "") + # Títulos de los ejes
+    scale_fill_manual(values = c("Hombres" = "skyblue", "Mujeres" = "plum")) + # Colores
+    coord_flip() + # Barras horizontales
+    theme_minimal() + # Tema
+    theme(axis.text.y = element_text(angle = 0, hjust = 1),
+          plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "top")
+```
+
+Si se desea contruir el gráfico con barras apiladas en lugar de barras paralelas, se debe ajustar el argumento `beside = FALSE` en la función `barplot` y ajustar la posición de las etiquetas. Por otro lado, usando *ggplot* se debe reemplazar `position_dodge(width = 0.9)` por `position = "stack"` en `geom_bar` y por `position = position_stack(vjust = 0.5)` en `geom_text` respectivamente.
+
+<br>
+
+### Variables continuas
+
+<br>
+
+#### Gráfico de dispersión
+
+```{r}
+# Paquete base
+plot(iris$Sepal.Length, iris$Petal.Length, # Datos
+     main = "Gráfico de dispersión entre Sepal.Length y Petal.Length", # Título 
+     xlab = "Sepal.Length", ylab = "Petal.Length", # Títulos de los ejes
+     pch = 16, cex = 1, col = "skyblue") # Tipo, tamaño y color de los puntos
+abline(lm(Petal.Length ~ Sepal.Length, data = iris), # Agrega la línea de regresión
+       col = "black", lwd = 1, lty = 2) # Color, grosor y tipo de la línea
+```
+
+```{r}
+#| message: false
+#| warning: false
+# ggplot
+library(ggplot2)
+iris %>%
+    dplyr::select(Sepal.Length, Petal.Length) %>%
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(x = Sepal.Length, y = Petal.Length)) +
+    geom_point(color = "skyblue", alpha = 0.6) + # Configuración de los puntos
+    geom_smooth(method = "lm", color = "black", se = FALSE, size = 0.5, linetype = "dashed") + # Línea de regresión
+    labs(title = "Gráfico de dispersión entre Sepal.Length y Petal.Length", # Título
+         x = "Sepal.Length", y = "Petal.Length") + # Títulos de los ejes
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "top") 
+```
+
+#### Matriz de correlación
+
+```{r}
+#| warning: false
+#| message: false
+library(corrplot)
+
+iris %>% select(1,2,3,4) %>% cor() %>% # Calculo de la matriz de correlación
+corrplot.mixed(upper = "circle", # Triángulo superior
+         lower = "number", # Triángulo inferior
+         tl.col = "black", tl.cex = 0.8, # Color y tamaño de las etiquetas
+         upper.col = colorRampPalette(c("skyblue", "plum"))(20), # Colores de los círculos
+         lower.col = colorRampPalette(c("skyblue", "plum"))(20), # Colores de los números
+         title = "Matriz de Correlación", # Título
+         mar = c(0, 0, 1, 0)) # Márgenes
+```
+
+#### Gráfico de serie temporal
+
+```{r}
+# Paquete base
+conteo <- table(Base_prueba_aspirantes$YEAR) # Conteo por año
+
+plot(names(conteo), conteo, 
+     type = "b", col = "skyblue", pch = 19, cex = 1, lwd = 2,  # Configuración de puntos y líneas
+     main = "Serie de tiempo anual", xlab = "Año", ylab = "Número de aspirantes", # Títulos
+     ylim = c(0, max(conteo)*1.1), xaxt = "n") # Rango del eje Y
+axis(1, names(conteo), las = 2)  # Ajusta las etiquetas del eje X
+axis(2, seq(from = 0, to = 350, by = 50), las = 1)  # Ajusta las etiquetas del eje Y
+text(names(conteo), conteo, labels = conteo, pos = 3, col = "black", cex = 0.8) # Agrega etiquetas a cada punto
+```
+
+```{r}
+# ggplot
+library(ggplot2)
+Base_prueba_aspirantes %>% 
+    group_by(YEAR) %>% count() %>% # Conteo por año
+ggplot(aes(x = YEAR, y = n)) + # Ejes
+    geom_line(color = "skyblue", size = 1) +  # Línea de la serie de tiempo
+    geom_point(color = "skyblue", size = 2) + # Puntos en cada fecha
+    geom_text(aes(label = n), vjust = -1, color = "black", size = 3) +  # Etiquetas en cada punto
+    labs(title = "Serie de tiempo anual", x = "Año", y = "Número de aspirantes") + # Títulos
+    scale_y_continuous(limits = c(0, max(conteo)*1.1)) + # Rango del eje Y
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"))
+```
+
+<br>
+
+### Variables categóricas y continuas
+
+<br>
+
+#### Gráfico de densidades
+
+```{r}
+#| message: false
+#| warning: false
+# ggplot
+library(ggplot2)
+Medias <- Base_prueba_aspirantes %>% 
+    group_by(ESTRATO) %>% 
+    summarize(mean_ptotal = mean(PTOTAL, na.rm = TRUE), n = n()) # Calcula la media y el número de observaciones
+Base_prueba_aspirantes %>%
+    select(PTOTAL, ESTRATO) %>% 
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(x = PTOTAL, fill = factor(ESTRATO))) + # Ejes
+    geom_density(alpha = 0.6) + # Densidades con transparencia
+    geom_vline(data = Medias, aes(xintercept = mean_ptotal), 
+               linetype = "dotted", color = "skyblue", size = 1) + # Líneas verticales para la media
+    geom_label(data = Medias, 
+               aes(x = mean_ptotal, y = 0, label = paste("Promedio:", round(mean_ptotal, 0), " - # Obs:", n)), 
+               angle = 0,  color = "skyblue", fill = "white", size = 3, label.padding = unit(0.2, "lines")) + # Etiquetas
+    labs(title = "Gráfico de densidades del puntaje total por estrato", # Título
+         x = "Puntaje Total", y = "Densidad", fill = "Estrato") + # Títulos de los ejes
+    scale_fill_brewer(palette = "Set2") + # Paleta de colores
+    facet_wrap(~ESTRATO, scales = "free") + # Separar distribuciones
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          plot.subtitle = element_text(hjust = 0.5, size = 12),
+          legend.position = "top") 
+```
+
+Por supuesto, en este caso es posible reemplazar el gráfico de densidades por otro tipo de gráficos, por ejemplo, histogramas.
+
+#### Boxplot
+
+```{r}
+# Paleta de colores
+library(paletteer)
+# Paquete base
+datos <- na.omit(Base_prueba_aspirantes[, c("INS_SEDE_NOMBRE", "PTOTAL")]) # Selecciona variables y elimina datos faltantes
+
+boxplot(PTOTAL ~ INS_SEDE_NOMBRE, # Fórmula > v. cuantitativa ~ v. cualitativa
+        data = datos,
+        main = "Boxplot del puntaje total por sede de inscripción",  # Título
+        xlab = "Sede", ylab = "Puntaje total", # Títulos de los ejes
+        col = paletteer_d("ggsci::blue_material"), border = "black", # Colores de las cajas
+        outline = TRUE, outcol = "black", outpch = 8, cex = 0.5, # Configuración de los valores atípicos
+        las = 2, cex.axis = 0.7) # Configuración de los ejes
+means <- tapply(datos$PTOTAL, datos$INS_SEDE_NOMBRE, mean, na.rm = TRUE) # Calcula la media de cada boxplot
+points(1:length(means), means, pch = 23, bg = "white", cex = 1.2)  # Punto de la media en blanco
+```
+
+
+```{r}
+library(ggplot2)
+Base_prueba_aspirantes %>%
+    select(INS_SEDE_NOMBRE, PTOTAL) %>% 
+    drop_na() %>% # Elimina datos faltantes
+ggplot(aes(x = factor(INS_SEDE_NOMBRE), y = PTOTAL, fill = factor(INS_SEDE_NOMBRE))) +
+    geom_boxplot(alpha = 0.7, outlier.color = "black", outlier.shape = 8, outlier.size = 0.5) +  # Boxplot con valores atípicos
+    stat_summary(fun = "mean", geom = "point", shape = 23, size = 2, fill = "white") +  # Mostrar la media
+    scale_fill_manual(values = paletteer_d("ggsci::blue_material")) +  # Paleta de colores
+    labs(title = "Boxplot del puntaje potal por sede de inscripción", # Título
+         x = "Sede", y = "Puntaje total", fill = "Sede") + # Título de los ejes
+    theme_minimal() + # Tema
+    theme(plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+          axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+

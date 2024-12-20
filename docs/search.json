@@ -1,0 +1,362 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "R en la gestión pública",
+    "section": "",
+    "text": "Cómo usar esta guía\nEste manual es una guía introductoria para quienes deseen utilizar R como herramienta en la gestión pública. Está organizado en capítulos temáticos que abarcan desde el manejo básico de objetos en R y la importación de datos, hasta gráficos y análisis más avanzados. Es ideal para aquellos que se inician en el análisis de datos con R y buscan una referencia completa y accesible.",
+    "crumbs": [
+      "Cómo usar esta guía"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html",
+    "href": "basicos_R.html",
+    "title": "1  Básicos de R",
+    "section": "",
+    "text": "1.1 Tipos de elementos",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#tipos-de-elementos",
+    "href": "basicos_R.html#tipos-de-elementos",
+    "title": "1  Básicos de R",
+    "section": "",
+    "text": "1.1.1 Numéricos (numeric)\nSe refiere a números con parte entera y parte decimal. Aunque se defina unicamente la parte entera, R asume la parte decimal como 0.\n\nx &lt;- 4.5\nclass(x)\n\n[1] \"numeric\"\n\nx &lt;- 4\nclass(x)\n\n[1] \"numeric\"\n\n\n\n\n1.1.2 Enteros (integer)\nSe refiere a números unicamente con parte entera. Para especificar que es un entero se debe poner el sufijo L, de lo contrario R lo interpreta como numeric.\n\nx &lt;- 4L\nclass(x)\n\n[1] \"integer\"\n\n\n\n\n1.1.3 Cadenas de texto (character)\n\nx &lt;- \"Ejemplo\"\nclass(x)\n\n[1] \"character\"\n\n\n\n\n1.1.4 Valores lógicos (logical)\nPueden ser: TRUE (verdadero) o FALSE (falso).\n\nx &lt;- TRUE\nclass(x)\n\n[1] \"logical\"\n\n\n\n\n1.1.5 Factores (factor)\nPermiten definir varibles categóricas, es decir, es adecuado cuando se conocen las posibles categorias que toma la variable.\n\ncolores &lt;- c(\"rojo\", \"azul\", \"verde\", \"rojo\", \"verde\", \"azul\")\nx &lt;- factor(colores)\nlevels(x)\n\n[1] \"azul\"  \"rojo\"  \"verde\"\n\nclass(x)\n\n[1] \"factor\"\n\n\n\n\n1.1.6 Fechas (date)\nPermiten representar la fecha exacta deseada deacuerdo al formato que se indique.\n\nas.Date(\"2008-09-15\", format = \"%Y-%m-%d\")\n\n[1] \"2008-09-15\"\n\nas.Date(\"March/15: 1992\", format = \"%B/%d: %Y\")\n\n[1] \"1992-03-15\"\n\n\nPara acceder a un detalle de la fecha especificada se emplea el comando format.\n\nformat(as.Date(\"2024-11-26\"), \"%Y\")\n\n[1] \"2024\"\n\n\nA continuación se presentan los símbolos para establecer el formato.\n\n\n\nSímbolo\nDescripción\n\n\n\n\n%Y\nAño con cuatro dígitos\n\n\n%y\nAño con dos dígitos\n\n\n%m\nMes en formato numérico (01-12)\n\n\n%b\nNombre abreviado del mes\n\n\n%B\nNombre completo del mes\n\n\n%d\nDía del mes (01-31)\n\n\n%a\nNombre abreviado del día de la semana\n\n\n%A\nNombre completo del día de la semana\n\n\n%j\nDía del año (001-366)\n\n\n%u\nDía de la semana (1 = lunes, 7 = domingo)\n\n\n%w\nDía de la semana (0 = domingo, 6 = sábado)\n\n\n%H\nHora (00-23)\n\n\n%I\nHora (01-12, formato AM/PM)\n\n\n%p\nAM o PM\n\n\n%M\nMinuto (00-59)\n\n\n%S\nSegundo (00-59)",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#regla-de-coerción",
+    "href": "basicos_R.html#regla-de-coerción",
+    "title": "1  Básicos de R",
+    "section": "1.2 Regla de coerción",
+    "text": "1.2 Regla de coerción\nR coerciona los elementos implícitamente para realizar operaciones en caso de ser necesario, esto quiere decir, que los transforma de un tipo a otro.\nEl orden de coerción es: lógico -&gt; entero -&gt; numérico -&gt; cadena de texto (logical -&gt; integer -&gt; numeric -&gt; character). Un ejemplo claro lo tenemos al hacer la siguiente comparación, que nos da como resultado TRUE.\n\n1 == \"1\"\n\n[1] TRUE\n\n\nEsto es muy importante tenerlo en cuenta para definir o realizar comparaciones entre objetos o elementos, ya que de lo contrario, se pueden producir resultados indeseados.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#regla-de-reciclaje-de-valores-completitud",
+    "href": "basicos_R.html#regla-de-reciclaje-de-valores-completitud",
+    "title": "1  Básicos de R",
+    "section": "1.3 Regla de reciclaje de valores (completitud)",
+    "text": "1.3 Regla de reciclaje de valores (completitud)\nCuando se especifican menos valores de lo que se requieren, R completa los espacios repitiendo la secuencia de valores dados. Se presenta un ejemplo claro en la siguiente sección (matrices).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#tipos-de-objetos",
+    "href": "basicos_R.html#tipos-de-objetos",
+    "title": "1  Básicos de R",
+    "section": "1.4 Tipos de objetos",
+    "text": "1.4 Tipos de objetos\nSon elementos organizados de diferentes maneras con el fin de manejarlos estructuradamente.\n\n1.4.1 Vectores (vector)\nSon colecciones de elementos del mismo tipo.\n\nnumeros &lt;- c(1, 2, 3, 4)\nclass(numeros)\n\n[1] \"numeric\"\n\ntextos &lt;- c(\"A\", \"B\", \"C\", 1)\ntextos\n\n[1] \"A\" \"B\" \"C\" \"1\"\n\nclass(textos)\n\n[1] \"character\"\n\n\nComo se observa, por la regla de coerción, los elementos en textos son todos del tipo character.\n\n\n1.4.2 Matrices (matrix)\nSon arreglos bidimensionales del mismo tipo. Se pueden formar a partir de vectores, teniendo en cuenta que las dimensiones sean adecuadas.\n\nmatriz &lt;- matrix(1:8, nrow = 2, ncol = 4)\nmatriz\n\n     [,1] [,2] [,3] [,4]\n[1,]    1    3    5    7\n[2,]    2    4    6    8\n\nmatriz2 &lt;- rbind(numeros,textos)\nmatriz2\n\n        [,1] [,2] [,3] [,4]\nnumeros \"1\"  \"2\"  \"3\"  \"4\" \ntextos  \"A\"  \"B\"  \"C\"  \"1\" \n\n\nSi las dimensiones no coinciden se aplica la regla de completitud. Por ejemplo:\n\n# Se define un vector de longitud 3\nvector &lt;- c(1, 2, 3)\n# Se define una matriz de dimension 2 x 3\nmatriz &lt;- matrix(vector, nrow = 2, ncol = 3)\nmatriz\n\n     [,1] [,2] [,3]\n[1,]    1    3    2\n[2,]    2    1    3\n\n# Se define una matriz de dimension 2 x 4 \n# la cual arroja una advertencia, ya que las longitudes no son múltiplos\nmatriz &lt;- matrix(vector, nrow = 2, ncol = 4)\n\nWarning in matrix(vector, nrow = 2, ncol = 4): data length [3] is not a\nsub-multiple or multiple of the number of rows [2]\n\nmatriz\n\n     [,1] [,2] [,3] [,4]\n[1,]    1    3    2    1\n[2,]    2    1    3    2\n\n\n\n\n1.4.3 Arreglos (array)\nSon la generalización de las matrices a más dimensiones. Se pueden formar a partir de vectores y/o matrices, teniendo en cuenta que las dimensiones sean adecuadas o se aplicará la regla de completitud.\n\narreglo &lt;- array(1:8, dim = c(2, 2, 2))\narreglo\n\n, , 1\n\n     [,1] [,2]\n[1,]    1    3\n[2,]    2    4\n\n, , 2\n\n     [,1] [,2]\n[1,]    5    7\n[2,]    6    8\n\narreglo2 &lt;- array(c(matriz,matriz2), dim = c(2, 4, 2))\narreglo2\n\n, , 1\n\n     [,1] [,2] [,3] [,4]\n[1,] \"1\"  \"3\"  \"2\"  \"1\" \n[2,] \"2\"  \"1\"  \"3\"  \"2\" \n\n, , 2\n\n     [,1] [,2] [,3] [,4]\n[1,] \"1\"  \"2\"  \"3\"  \"4\" \n[2,] \"A\"  \"B\"  \"C\"  \"1\" \n\n\n\n\n1.4.4 Data frames (data.frame)\nSon estructuras bidimensionales que permiten columnas de diferentes tipos. Se emplean usualmente para representar tablas de datos cuando se tienen variables numéricas y categoricas simultáneamente.\n\ndf &lt;- data.frame(\n  ID = c(1, 2, 3),\n  Nombre = c(\"Ana\", \"Luis\", \"Juan\"),\n  Edad = c(23, 30, 45),\n  Sexo= factor(c(\"Femenino\",\"Masculino\",\"Masculino\"))\n)\ndf\n\n  ID Nombre Edad      Sexo\n1  1    Ana   23  Femenino\n2  2   Luis   30 Masculino\n3  3   Juan   45 Masculino\n\n\n\n\n1.4.5 Listas (list)\nColección de elementos que puede ser de diferentes tipos, incluso otras colecciones de elementos como matrices o data frames.\n\nlista &lt;- list(nombre = \"Juan\", edad = 25, notas = c(8, 9, 10))\nlista\n\n$nombre\n[1] \"Juan\"\n\n$edad\n[1] 25\n\n$notas\n[1]  8  9 10\n\nlista2 &lt;- list(numeros, matriz, arreglo, df)\nlista2\n\n[[1]]\n[1] 1 2 3 4\n\n[[2]]\n     [,1] [,2] [,3] [,4]\n[1,]    1    3    2    1\n[2,]    2    1    3    2\n\n[[3]]\n, , 1\n\n     [,1] [,2]\n[1,]    1    3\n[2,]    2    4\n\n, , 2\n\n     [,1] [,2]\n[1,]    5    7\n[2,]    6    8\n\n\n[[4]]\n  ID Nombre Edad      Sexo\n1  1    Ana   23  Femenino\n2  2   Luis   30 Masculino\n3  3   Juan   45 Masculino",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#convertir-a-otro-tipo-de-objeto",
+    "href": "basicos_R.html#convertir-a-otro-tipo-de-objeto",
+    "title": "1  Básicos de R",
+    "section": "1.5 Convertir a otro tipo de objeto",
+    "text": "1.5 Convertir a otro tipo de objeto\nEsto se puede hacer mediante las funciones as.numeric, as.character, as.factor, as.vector, as.matrix, as.array, as.data.frame, as.list, siempre que sean compatibles teniendo en cuenta la regla de coerción. Por ejemplo:\n\nas.numeric(\"1\")\n\n[1] 1\n\nas.matrix(df)\n\n     ID  Nombre Edad Sexo       \n[1,] \"1\" \"Ana\"  \"23\" \"Femenino\" \n[2,] \"2\" \"Luis\" \"30\" \"Masculino\"\n[3,] \"3\" \"Juan\" \"45\" \"Masculino\"",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#tipos-de-datos-especiales",
+    "href": "basicos_R.html#tipos-de-datos-especiales",
+    "title": "1  Básicos de R",
+    "section": "1.6 Tipos de datos especiales",
+    "text": "1.6 Tipos de datos especiales\n\nNA: Representa valores faltantes o desconocidos.\nNULL: Representa que un objeto esta vacio.\nNaN (Not a number): Representa un valor no numérico derivado de operaciones inválidas.\n\n\n0/0\n\n[1] NaN\n\n\n\nInf: Representa infinito\n\n\n1/0\n\n[1] Inf",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#crear-secuencias-numéricas",
+    "href": "basicos_R.html#crear-secuencias-numéricas",
+    "title": "1  Básicos de R",
+    "section": "1.7 Crear secuencias numéricas",
+    "text": "1.7 Crear secuencias numéricas\nHay diversas maneras de crear secuencias numéricas, útiles por ejemplo para definir indices, rangos para iterar sobre objetos, entre otras.\n\n# Secuencia del 1 al 10\nseq1 &lt;- 1:10\nseq1\n\n [1]  1  2  3  4  5  6  7  8  9 10\n\n# Secuencia del 1 al 10 con paso 2\nseq2 &lt;- seq(from = 1, to = 10, by = 2)\nseq2\n\n[1] 1 3 5 7 9\n\n# Secuencia del 1 al 10 con 5 elementos\nseq3 &lt;- seq(from = 1, to = 10, length.out = 5)\nseq3\n\n[1]  1.00  3.25  5.50  7.75 10.00\n\n# Repetir el número 5, 10 veces\nrep1 &lt;- rep(5, times = 10)\nrep1\n\n [1] 5 5 5 5 5 5 5 5 5 5\n\n# Repetir la secuencia 1:3, 4 veces\nrep2 &lt;- rep(1:3, times = 4)\nrep2\n\n [1] 1 2 3 1 2 3 1 2 3 1 2 3\n\n# Repetir cada número en 1:3 dos veces\nrep3 &lt;- rep(1:3, each = 2)\nrep3\n\n[1] 1 1 2 2 3 3\n\n# Secuencia aleatoria del 1 al 10\nrandom_seq &lt;- sample(1:10)\nrandom_seq\n\n [1]  5  9  1  3  7  2  6  8  4 10",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#operadores",
+    "href": "basicos_R.html#operadores",
+    "title": "1  Básicos de R",
+    "section": "1.8 Operadores",
+    "text": "1.8 Operadores\n\n1.8.1 Operadores aritméticos\nPermiten realizar operaciones aritméticas entre números.\n\n\n\n\n\n\n\n\n\nOperador\nDescripción\nEjemplo\nResultado\n\n\n\n\n+\nSuma\n6 + 3\n9\n\n\n-\nResta\n6 - 4\n2\n\n\n*\nMultiplicación\n4 * 3\n12\n\n\n/\nDivisión\n5 / 2\n2.5\n\n\n^ o **\nPotenciación\n2^3 o 2**3\n8\n\n\n%%\nMódulo (resto de la división)\n5 %% 2\n1\n\n\n%/%\nDivisión entera\n5 %/% 2\n2\n\n\n\nEl orden en que se ejecutan los operadores son: primero lo que esta en parentesis (), seguido de ^, ** -&gt; *, /, %%, %/% -&gt; +, -.\n\nresultado &lt;- 3 + 5 * 2 ^ 2 - (8 / 4)\n\n# Paso a paso:\n# 1. Paréntesis: (8 / 4) = 2\n# 2. Exponentes: 2 ^ 2 = 4\n# 3. Multiplicación: 5 * 4 = 20\n# 4. Suma y resta: 3 + 20 - 2 = 21\n\nresultado\n\n[1] 21\n\n\n\n\n1.8.2 Operadores lógicos\nPermiten realizar operaciones entre valores lógicos y dan como resultado un valor lógico, como se muestra a continuación.\n\n\n\n\n\n\n\n\n\nOperador\nDescripción\nEjemplo\nResultado\n\n\n\n\n&\nAND lógico (elemento por elemento)\nc(TRUE, FALSE) & c(TRUE, TRUE)\nTRUE, FALSE\n\n\n|\nOR lógico (elemento por elemento)\nc(TRUE, FALSE) | c(FALSE, TRUE)\nTRUE, TRUE\n\n\n&&\nAND lógico (evaluación de primer elemento)\nTRUE && FALSE\nFALSE\n\n\n||\nOR lógico (evaluación de primer elemento)\nTRUE || FALSE\nTRUE\n\n\n!\nNegación lógica\n!TRUE\nFALSE\n\n\nxor()\nOR exclusivo (XOR)\nxor(TRUE, FALSE)\nTRUE\n\n\n\n\n\n1.8.3 Operadores relacionales\nPermiten comparar objetos o elementos y devuelven como resultado un valor lógico.\n\n\n\n\n\n\n\n\n\nOperador\nDescripción\nEjemplo\nResultado\n\n\n\n\n&lt;\nMenor que\n5 &lt; 3\nFALSE\n\n\n&gt;\nMayor que\n5 &gt; 3\nTRUE\n\n\n&lt;=\nMenor o igual que\n5 &lt;= 5\nTRUE\n\n\n&gt;=\nMayor o igual que\n5 &gt;= 7\nFALSE\n\n\n==\nIgual a\n5 == 5\nTRUE\n\n\n!=\nDiferente de\n5 != 3\nTRUE\n\n\n\nCabe destacar que el operador == se emplea para comparar, y el resultado es un valor lógico.\n\n\n1.8.4 Operadores de asignación\nLos operadores de asignación son = y &lt;-. Es una buena práctica utilizar &lt;- para asignar valores a variables, o guardar objetos y = únicamente para definir el valor de los argumentos que recibe una función. Cabe destacar que al asignar un valor a una variable que ya se había definido, se conserva el valor más reciente. Por ejemplo:\n\nasignacion &lt;- \"Hola\"\nasignacion &lt;- \"¿Cómo estás?\"\nasignacion\n\n[1] \"¿Cómo estás?\"",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#estructuras-de-control",
+    "href": "basicos_R.html#estructuras-de-control",
+    "title": "1  Básicos de R",
+    "section": "1.9 Estructuras de control",
+    "text": "1.9 Estructuras de control\n\n1.9.1 if, else\nif es una estructura de control que permite ejecutar un bloque de código cuando la condición es verdadera.\n\nif(Condición) {\n  operaciones_si_la_condición_es_TRUE\n}\n\nelse permite que adicionalmente, se ejecute un bloque de código cuando la condición es falsa.\n\nif(condición) {\n  operaciones_si_la_condición_es_TRUE\n} else {\n  operaciones_si_la_condición_es_FALSE\n}\n\nifelse permite simplicar el condicional utilizando un enfoque vectorizado si se desea devolver un único valor.\n\nisfelse(condición, valor_si_la_condición_es_TRUE, valor_si_la_condición_es_FALSE)\n\nPor ejemplo:\n\nnumero &lt;- -5\n\nif (numero &gt; 0) {\n  print(\"El número es positivo\")\n} else if (numero &lt; 0) {\n  print(\"El número es negativo\")\n} else {\n  print(\"El número es cero\")\n}\n\n[1] \"El número es negativo\"\n\n\n\ntemperaturas &lt;- c(25, 30, 18, 15, 40, 10)\nclasificacion &lt;- ifelse(temperaturas &gt;= 30, \"Calor\", \"Fresco\")\nclasificacion\n\n[1] \"Fresco\" \"Calor\"  \"Fresco\" \"Fresco\" \"Calor\"  \"Fresco\"\n\n\n\n\n1.9.2 For\nfor es una estructura que control que permite ejecutar repetidamente un bloque de código.\n\nfor (variable in secuencia) {\n  código_a_ejecutar_en_cada_iteración\n}\n\nPara ilustrar como funciona el comando for, se presentan dos ejemplos útiles en la práctica: como introducir elementos a una matriz y a una lista.\n\n# Crear una matriz vacía de 3 filas y 4 columnas\nej_matriz &lt;- matrix(NA, nrow = 3, ncol = 4)\n\n# Llenar la matriz fila por fila\ncontador &lt;- 1 # Valor incial\nfor (i in 1:nrow(ej_matriz)) { # para cada i = 1,2,3\n  for (j in 1:ncol(ej_matriz)) { # para cada j = 1,2,3,4\n    ej_matriz[i, j] &lt;- contador\n    contador &lt;- contador + 1 # Operación para actualizar el valor\n  }\n}\nmatriz\n\n     [,1] [,2] [,3] [,4]\n[1,]    1    3    2    1\n[2,]    2    1    3    2\n\n\n\n# Inicializar la lista vacía\nej_lista &lt;- list()\n\n\n# Agregar elementos a la lista con un bucle for\nfor (i in 1:4) { \n  ej_lista[[i]] &lt;- i^2  # Por ejemplo, el cuadrado del índice\n}\nej_lista\n\n[[1]]\n[1] 1\n\n[[2]]\n[1] 4\n\n[[3]]\n[1] 9\n\n[[4]]\n[1] 16\n\n\n\n\n1.9.3 while\nwhile es una estructura de control que permite ejecutar un bloque de código repetidamente mientras la condición sea verdadera.\n\nwhile(condicion) {\n  operaciones_mientras_la_condición_es_TRUE\n}\n\nPor ejemplo:\n\nlimite &lt;- 3\ncontador &lt;- 0\n\nwhile(contador &lt; limite) {\n  print(paste(limite, \"&gt;\", contador))\n  contador &lt;- contador + 1\n}\n\n[1] \"3 &gt; 0\"\n[1] \"3 &gt; 1\"\n[1] \"3 &gt; 2\"\n\n\n\nNota: Es importante tener cuidado con la condición, ya que si en ningún momento es falsa, se puede generar un bucle infinito.\n\n\n\n1.9.4 break y next\nbreak permite detener la iteración de un bucle, y next saltar una iteración del bucle.\n\nnumero &lt;- 10\n\nwhile(numero &gt; 0) {\n  if(numero == 4) {\n    break\n  }\n  numero &lt;- numero - 1\n}\n\nnumero\n\n[1] 4\n\n\n\nfor(i in 1:4) {\n  if(i == 3) {\n    next\n  }\n  print(i)\n}\n\n[1] 1\n[1] 2\n[1] 4",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "basicos_R.html#funciones",
+    "href": "basicos_R.html#funciones",
+    "title": "1  Básicos de R",
+    "section": "1.10 Funciones",
+    "text": "1.10 Funciones\nUna función es un bloque de código reutilizable que realiza una tarea específica. Una función toma una entrada (argumentos), realiza una serie de operaciones y, opcionalmente, devuelve un resultado.\n\nnombre &lt;- function(argumentos) {\n  operaciones\n  return(resultado)\n}\n\nPor ejemplo, a continuación se crea una función que indica si un número es par.\n\nes_par &lt;- function(numero) {\n  if (numero %% 2 == 0) {\n    return(TRUE)  # El número es par\n  } else {\n    return(FALSE) # El número no es par\n  }\n}\n\nes_par(4) \n\n[1] TRUE\n\nes_par(7)\n\n[1] FALSE\n\n\nEsto es particularmente útil cuando se necesita utilizar varias veces un bloque de código que cumple una función determinada, por ejemplo para procesar imagenes o realizar transformaciones a tablas de datos. Por supuesto, tanto en el paquete base de R, como en paquetes que requieren instalación vienen establecidas gran cantidad de funciones que otras personas han desarrollado. Para la mayoría de tareas necesarias en el análisis de datos ya existen funciones que permiten realizarlas.\nTambién es posible crear funciones anónimas empleando \\, y son útiles como argumento de otra función o para tareas rápidas.\n\nr = \\(x) x + 1\nr(6)\n\n[1] 7\n\n\nPara ampliar la información presentada en este capítulo y conocer más acerca del funcionamiento de R, se recomienda consultar los manuales disponibles en la página oficial. Para acceder de click aquí.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Básicos de R</span>"
+    ]
+  },
+  {
+    "objectID": "importar_datos.html",
+    "href": "importar_datos.html",
+    "title": "2  ¿Cómo importar datos?",
+    "section": "",
+    "text": "2.1 Excel\nif (!require(\"readxl\")) install.packages(\"readxl\")\nlibrary(readxl)\nBase_prueba_aspirantes &lt;- read_excel(path=\"datos/Base_prueba_aspirantes.xlsx\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>¿Cómo importar datos?</span>"
+    ]
+  },
+  {
+    "objectID": "importar_datos.html#csv",
+    "href": "importar_datos.html#csv",
+    "title": "2  ¿Cómo importar datos?",
+    "section": "2.2 CSV",
+    "text": "2.2 CSV\n\nif (!require(\"readr\")) install.packages(\"readr\")\nlibrary(readr)\nBase_prueba_aspirantes &lt;- read_csv(file=\"datos/Base_prueba_aspirantes.csv\")\n\n# Usando el paquete base\nBase_prueba_aspirantes &lt;- read.csv(file=\"datos/Base_prueba_aspirantes.csv\", encoding=\"UTF-8\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>¿Cómo importar datos?</span>"
+    ]
+  },
+  {
+    "objectID": "importar_datos.html#txt",
+    "href": "importar_datos.html#txt",
+    "title": "2  ¿Cómo importar datos?",
+    "section": "2.3 txt",
+    "text": "2.3 txt\n\nif (!require(\"readr\")) install.packages(\"readr\")\nlibrary(readr)\nBase_prueba_aspirantes &lt;- read_csv(file=\"datos/Base_prueba_aspirantes.txt\")\n\n# Usando el paquete base\nBase_prueba_aspirantes &lt;- read.table(file=\"datos/Base_prueba_aspirantes.txt\", header = TRUE, sep = \",\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>¿Cómo importar datos?</span>"
+    ]
+  },
+  {
+    "objectID": "importar_datos.html#spss",
+    "href": "importar_datos.html#spss",
+    "title": "2  ¿Cómo importar datos?",
+    "section": "2.4 SPSS",
+    "text": "2.4 SPSS\n\nif (!require(\"haven\")) install.packages(\"haven\")\nlibrary(haven)\nBase_prueba_aspirantes &lt;- read_sav(file=\"datos/Base_prueba_aspirantes.sav\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>¿Cómo importar datos?</span>"
+    ]
+  },
+  {
+    "objectID": "importar_datos.html#sas",
+    "href": "importar_datos.html#sas",
+    "title": "2  ¿Cómo importar datos?",
+    "section": "2.5 SAS",
+    "text": "2.5 SAS\n\nif (!require(\"haven\")) install.packages(\"haven\")\nlibrary(haven)\nBase_prueba_aspirantes &lt;- read_sas(data_file=\"datos/Base_prueba_aspirantes.sas7bdat\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>¿Cómo importar datos?</span>"
+    ]
+  },
+  {
+    "objectID": "importar_datos.html#stata",
+    "href": "importar_datos.html#stata",
+    "title": "2  ¿Cómo importar datos?",
+    "section": "2.6 Stata",
+    "text": "2.6 Stata\n\nif (!require(\"haven\")) install.packages(\"haven\")\nlibrary(haven)\nBase_prueba_aspirantes &lt;- read_dta(file=\"datos/Base_prueba_aspirantes.dta\")\n\nTodas las opciones generan como resultado un data frame como el siguiente.\n\nhead(Base_prueba_aspirantes)\n\n# A tibble: 6 × 59\n  ID         YEARSEMESTRE  YEAR SEMESTRE DEP_NAC COD_DEP_NAC CIU_NAC COD_CIU_NAC\n  &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;\n1 32417             20192  2019        2 HUILA            41 PITALI…       41551\n2 1124313524        20241  2024        1 PUTUMA…          86 SIBUND…       86749\n3 3460              20192  2019        2 ATLÁNT…           8 BARRAN…        8001\n4 66646             20171  2017        1 SANTAN…          68 PUENTE…       68572\n5 6459              20161  2016        1 ANTIOQ…           5 MEDELL…        5001\n6 36805             20192  2019        2 RISARA…          66 DOSQUE…       66170\n# ℹ 51 more variables: LON_CIU_NAC &lt;dbl&gt;, LAT_CIU_NAC &lt;dbl&gt;, DEP_RES &lt;chr&gt;,\n#   COD_DEP_RES &lt;dbl&gt;, CIU_RES &lt;chr&gt;, COD_CIU_RES &lt;dbl&gt;, LON_CIU_RES &lt;dbl&gt;,\n#   LAT_CIU_RES &lt;dbl&gt;, CODS_NAC &lt;chr&gt;, CODN_NAC &lt;dbl&gt;, NACIONALIDAD &lt;chr&gt;,\n#   EDAD_MOD &lt;dbl&gt;, CAT_EDAD &lt;chr&gt;, SEXO &lt;chr&gt;, ESTRATO_ORIG &lt;chr&gt;,\n#   ESTRATO &lt;chr&gt;, DISCAPACIDAD &lt;chr&gt;, TIPO_DISC &lt;chr&gt;, MOD_INS &lt;chr&gt;,\n#   TIPO_INS &lt;chr&gt;, PAES &lt;chr&gt;, PEAMA &lt;chr&gt;, PAET &lt;chr&gt;, SNIES_SEDE &lt;dbl&gt;,\n#   INS_SEDE_NOMBRE &lt;chr&gt;, PTOTAL &lt;dbl&gt;, ADMITIDO &lt;chr&gt;, …\n\n\n\nNota: Es importante que los nombres de las columnas no contengan caracteres especiales ni espacios para evitar errores, especialmente en los formatos de SPSS y SAS. Adicionalmente, es recomendable especificar la codificación UTF-8 para evitar que las tildes y otros caracteres se interpreten correctamente.\n\nSi se desea ampliar la información de las funciones empleadas para importar los archivos, se debe ingresar en la consola el nombre de la función antecedido por un signo de interrogación, por ejemplo: ?read_dta.\nPara ver el archivo dentro de R studio se emplea el comando View(Base_prueba_aspirantes).\n\nCabe destacar que también es posible importar los archivos en R studio desde el menú ubicado en la parte superior File &gt; Import Dataset.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>¿Cómo importar datos?</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html",
+    "href": "manipulacion_de_datos.html",
+    "title": "3  Manipulación de datos",
+    "section": "",
+    "text": "3.1 Identificar tamaños\nPara esto se emplean los comandos length() y dim() dependiendo el tipo de objeto. El resultado es un vector cuyo primer componente indica número de filas, el segundo número de columnas, y así sucesivamente para más dimensiones.\n# En vectores y listas\nvector &lt;- c(1, 2, 3, 4)\nlength(vector)\n\n[1] 4\n\nlista &lt;- list(nombre = \"Juan\", edad = 25, notas = c(8, 9, 10))\nlength(lista)\n\n[1] 3\n\n# En matrices, arreglos y data frames\nmatriz &lt;- matrix(1:8, nrow = 2, ncol = 4)\ndim(matriz)\n\n[1] 2 4\n\narreglo &lt;- array(1:8, dim = c(2, 2, 2))\ndim(arreglo)\n\n[1] 2 2 2\n\ndim(Base_prueba_aspirantes)\n\n[1] 5000   59",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#seleccionar-columnas",
+    "href": "manipulacion_de_datos.html#seleccionar-columnas",
+    "title": "3  Manipulación de datos",
+    "section": "3.2 Seleccionar columnas",
+    "text": "3.2 Seleccionar columnas\nPara mostrar los nombres de todas las columnas del data frame se emplea el comando names(Base_prueba_aspirantes). La selección se realiza simplemente indicando el nombre de las columnas o los números correspondientes a los índices en el orden deseado.\n\nBase_select &lt;- Base_prueba_aspirantes[,c(\"ID\",\"YEAR\",\"SEMESTRE\",\"SEXO\",\"FACULTAD\",\"PTOTAL\")] # base\nBase_select &lt;- Base_prueba_aspirantes[,c(1,3,4,22,38,34)] # base\n\nlibrary(dplyr) # solo es necesario la primera vez\nBase_select &lt;- Base_prueba_aspirantes %&gt;% select(ID,YEAR,SEMESTRE,SEXO,FACULTAD,PTOTAL) # dplyr\nBase_select &lt;- Base_prueba_aspirantes %&gt;% select(1,3,4,22,38,34) # dplyr\ndatatable(Base_select)\n\n\n\n\n\nA continuación se presenta cómo seleccionar columnas que cumplen con ciertas características especificadas mediante el paquete tidyselect, y en algunos casos con el paquete base de R.\n\nstarts_with(): Permite seleccionar columnas cuyos nombres comienzan con un prefijo específico. Por ejemplo, starts_with(“col”) selecciona todas las columnas cuyo nombre comienza con “col”.\n\n\nBase_prueba_aspirantes %&gt;% select(starts_with(\"COD\")) %&gt;% datatable()\n\n\n\n\n# con el paquete base:\n# Base_prueba_aspirantes[ , grep(\"^COD\", names(Base_prueba_aspirantes))]\n\n\nends_with(): Similar a starts_with(), pero selecciona columnas cuyos nombres terminan con un sufijo dado. Por ejemplo, ends_with(“age”) selecciona columnas cuyo nombre termina con “age”.\n\n\nBase_prueba_aspirantes %&gt;% select(ends_with(\"RES\")) %&gt;% datatable()\n\n\n\n\n# con el paquete base:\n# Base_prueba_aspirantes[ , grep(\"RES$\", names(Base_prueba_aspirantes))]\n\n\ncontains(): Selecciona columnas cuyos nombres contienen una subcadena específica. Por ejemplo, contains(“year”) selecciona todas las columnas cuyo nombre contiene la palabra “year”.\n\n\nBase_prueba_aspirantes %&gt;% select(contains(\"DEP\")) %&gt;% datatable()\n\n\n\n\n# con el paquete base:\n# Base_prueba_aspirantes[ , grep(\"DEP\", names(Base_prueba_aspirantes))]\n\n\nmatches(): Selecciona columnas cuyos nombres coinciden con una expresión regular. Es útil para patrones más complejos. Por ejemplo, matches(“^X[0-9]+$”) selecciona todas las columnas que comienzan con “X” seguidas de números.\neverything(): Selecciona todas las columnas en el data frame. Puede usarse en combinación con otros selectores para reordenar las columnas. Por ejemplo, select(df, starts_with(“col”), everything()) selecciona las columnas que comienzan con “col” y luego todas las demás.\nnum_range(): Selecciona columnas con nombres que siguen un patrón numérico. Es útil para columnas que se nombran con un prefijo seguido de números. Por ejemplo, num_range(“X”, 1:5) selecciona X1, X2, X3, X4, y X5.\none_of(): Permite seleccionar columnas cuyos nombres están en un vector. Por ejemplo, one_of(c(“col1”, “col2”)) selecciona las columnas “col1” y “col2”.\nall_of(): Similar a one_of(), pero asegura que todas las columnas especificadas estén presentes. Si alguna columna no existe, genera un error.\nany_of(): Similar a one_of(), pero no genera un error si alguna de las columnas no existe. Selecciona las columnas que están en el vector, si existen.\ndrop(): Permite excluir ciertas columnas de la selección. Por ejemplo, select(df, -drop(col1)) elimina la columna col1 del data frame. Análogamente, con el paquete base de R: Base_prueba_aspirantes[ , !names(df) %in% \"col1\"].",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#renombrar-columnas",
+    "href": "manipulacion_de_datos.html#renombrar-columnas",
+    "title": "3  Manipulación de datos",
+    "section": "3.3 Renombrar columnas",
+    "text": "3.3 Renombrar columnas\n\ncolnames(Base_select)[colnames(Base_select) == \"YEAR\"] &lt;- \"ANNO\" # base\n\n\nBase_select &lt;- Base_select %&gt;% rename(ANNO = YEAR) #dplyr\ndatatable(Base_select)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#ordenar-columnas",
+    "href": "manipulacion_de_datos.html#ordenar-columnas",
+    "title": "3  Manipulación de datos",
+    "section": "3.4 Ordenar columnas",
+    "text": "3.4 Ordenar columnas\nExisten diversas maneras de ordenar las columnas, a continuación se presentan las más usadas.\n\n# Poner una columna al principio\nBase_ordenada &lt;- Base_select[, c(\"SEXO\", setdiff(names(Base_select), \"SEXO\"))] # base\nBase_ordenada &lt;- Base_select %&gt;% relocate(SEXO) # dplyr\ndatatable(Base_ordenada)\n\n\n\n\n# Poner una columna antes que otra\nBase_ordenada &lt;- Base_select %&gt;% relocate(SEXO, .before = SEMESTRE) # dplyr\ndatatable(Base_ordenada)\n\n\n\n\n# Poner una columna despues de otra\nBase_ordenada &lt;- Base_select %&gt;% relocate(SEXO, .after = FACULTAD) # dplyr\ndatatable(Base_ordenada)\n\n\n\n\n# Poner una columna al final\nBase_ordenada &lt;- Base_select[, c(setdiff(names(Base_select), \"ID\"), \"ID\")] # base\nBase_ordenada &lt;- Base_select %&gt;% relocate(ID, .after = last_col()) # dplyr\ndatatable(Base_ordenada)\n\n\n\n\n# Poner las columnas tipo numerico despues de las columnas tipo caracter\nBase_ordenada &lt;- Base_select[, order(sapply(Base_select, is.numeric))] # base\n# order ordena los índices basándose en el vector lógico que devuelve sapply, colocando FALSE (carácter) antes que TRUE (numérico).\nBase_ordenada &lt;- Base_select %&gt;% relocate(where(is.numeric), .after = where(is.character)) # dplyr\ndatatable(Base_ordenada)\n\n\n\n\n# Especificar un nuevo orden\nBase_ordenada &lt;- Base_select[,c(\"ID\",\"FACULTAD\",\"ANNO\",\"SEMESTRE\",\"SEXO\",\"PTOTAL\",\"FACULTAD\")] # base\nBase_ordenada &lt;- Base_select %&gt;% select(ID,FACULTAD,ANNO,SEMESTRE,SEXO,PTOTAL,FACULTAD) # dplyr\ndatatable(Base_ordenada)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#definir-nuevas-columnas-a-partir-de-otras",
+    "href": "manipulacion_de_datos.html#definir-nuevas-columnas-a-partir-de-otras",
+    "title": "3  Manipulación de datos",
+    "section": "3.5 Definir nuevas columnas a partir de otras",
+    "text": "3.5 Definir nuevas columnas a partir de otras\nPor ejemplo, suponiendo que se desea construir la variable PERIODO a partir del año y el semestre. En este caso, se concatenan para formar una variable de tipo caracter por lo tanto se emplea la función paste().\n\nBase_select$PERIODO &lt;- paste(Base_select$ANNO,\"-\",Base_select$SEMESTRE) # base\nBase_select &lt;- Base_select %&gt;% mutate(PERIODO = paste(ANNO,\"-\",SEMESTRE)) # dplyr\ndatatable(Base_select)\n\n\n\n\n\n También se pueden definir nuevas variables a partir de operaciones numéricas o lógicas. Por ejemplo, crear una variable con los puntajes estandarizados se hace de la siguiente manera.\n\nBase_select$PTOTAL_ESTANDAR &lt;- round((Base_select$PTOTAL - mean(Base_select$PTOTAL, na.rm = T)) / sd(Base_select$PTOTAL, na.rm = T),3) # base\n# el argumento na.rm permite omitir NA y la función round() redondea al número de cifras decimales especificado\nBase_select &lt;- Base_select %&gt;% mutate(PTOTAL_ESTANDAR = round((PTOTAL - mean(PTOTAL, na.rm = T)) / sd(PTOTAL, na.rm = T),3)) # dplyr\ndatatable(Base_select)\n\n\n\n\n\n Y para crear una variable dummy que indique si el puntaje fue superior a 600:\n\nBase_select$PTOTAL_ALTO &lt;- ifelse(Base_select$PTOTAL &gt; 600, 1, 0) # base\nBase_select &lt;- Base_select %&gt;% mutate(PTOTAL_ATO = ifelse(PTOTAL &gt; 600, 1, 0)) # dplyr\ndatatable(Base_select)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#filtrar-filas",
+    "href": "manipulacion_de_datos.html#filtrar-filas",
+    "title": "3  Manipulación de datos",
+    "section": "3.6 Filtrar filas",
+    "text": "3.6 Filtrar filas\nLas filas se pueden realizar filtros sobre una o múltiples variables, empleando operadores lógicos y relacionales.\n\n# Filtrar filas con año mayor a 2021 y de sexo femenino\nBase_filtrada &lt;- Base_select[(Base_select$ANNO &gt; 2021 & Base_select$SEXO == \"Mujeres\"), ] # base\nBase_filtrada &lt;- Base_select %&gt;% filter(ANNO &gt; 2021, SEXO == \"Mujeres\") # dplyr\ndatatable(Base_filtrada)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#ordenar-filas",
+    "href": "manipulacion_de_datos.html#ordenar-filas",
+    "title": "3  Manipulación de datos",
+    "section": "3.7 Ordenar filas",
+    "text": "3.7 Ordenar filas\nLas filas se pueden ordenar por una o múltiples variables. Cuando las variables son caracteres, se ordenan en orden alfabéticos y si son factores, deacuerdo a los niveles que se hayan definido.\n\n# Ordenar por año en orden ascendente\nBase_select &lt;- Base_select[order(Base_select$ANNO, Base_select$SEMESTRE), ] # base\nBase_select &lt;- Base_select %&gt;% arrange(ANNO, SEMESTRE) # dplyr\ndatatable(Base_select)\n\n\n\n\n# Ordenar por año en orden descendente\nBase_select &lt;- Base_select[order(-Base_select$ANNO), ] # base\nBase_select &lt;- Base_select %&gt;% arrange(desc(ANNO)) # dplyr\ndatatable(Base_select)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#agrupar-filas",
+    "href": "manipulacion_de_datos.html#agrupar-filas",
+    "title": "3  Manipulación de datos",
+    "section": "3.8 Agrupar filas",
+    "text": "3.8 Agrupar filas\nLas filas se pueden ordenar por una o múltiples variables y de esta manera aplicar funciones sobre los grupos formados, ya sea funciones de algún paquete o definidas por el usuario. La utilidad de agrupar filas se ve reflejada justamente al aplicar alguna función o transformación sobre los grupos formados.\n\nBase_agrupada &lt;- aggregate(PTOTAL ~ FACULTAD, data = Base_select, FUN = mean) # base\nBase_agrupada &lt;- Base_select %&gt;% group_by(FACULTAD) %&gt;% summarise(PROMEDIO = round(mean(PTOTAL, na.rm = TRUE),3)) # dplyr\ndatatable(Base_agrupada)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#resumir-múltiples-columnas",
+    "href": "manipulacion_de_datos.html#resumir-múltiples-columnas",
+    "title": "3  Manipulación de datos",
+    "section": "3.9 Resumir múltiples columnas",
+    "text": "3.9 Resumir múltiples columnas\nEn ocasiones se desea calcular estadísticas de resumen por columna para tener una idea del compartamiento de los datos.\n\nsummary(Base_select) # base\n\n       ID                 ANNO         SEMESTRE         SEXO          \n Min.   :2.100e+01   Min.   :2008   Min.   :1.000   Length:5000       \n 1st Qu.:1.055e+04   1st Qu.:2012   1st Qu.:1.000   Class :character  \n Median :2.622e+04   Median :2016   Median :1.000   Mode  :character  \n Mean   :1.008e+08   Mean   :2016   Mean   :1.356                     \n 3rd Qu.:4.576e+04   3rd Qu.:2019   3rd Qu.:2.000                     \n Max.   :1.234e+09   Max.   :2024   Max.   :2.000                     \n                                                                      \n   FACULTAD             PTOTAL         PERIODO          PTOTAL_ESTANDAR \n Length:5000        Min.   :-27.13   Length:5000        Min.   :-2.575  \n Class :character   1st Qu.:397.34   Class :character   1st Qu.:-0.255  \n Mode  :character   Median :483.47   Mode  :character   Median : 0.216  \n                    Mean   :444.01                      Mean   : 0.000  \n                    3rd Qu.:554.88                      3rd Qu.: 0.606  \n                    Max.   :929.63                      Max.   : 2.654  \n                    NA's   :226                         NA's   :226     \n  PTOTAL_ALTO       PTOTAL_ATO    \n Min.   :0.0000   Min.   :0.0000  \n 1st Qu.:0.0000   1st Qu.:0.0000  \n Median :0.0000   Median :0.0000  \n Mean   :0.1408   Mean   :0.1408  \n 3rd Qu.:0.0000   3rd Qu.:0.0000  \n Max.   :1.0000   Max.   :1.0000  \n NA's   :226      NA's   :226     \n\nresumen &lt;- Base_select %&gt;% # dplyr\n  select(PTOTAL) %&gt;%\n  summarise(across(where(is.numeric), list(\n    Media = ~round(mean(.x, na.rm = TRUE),2),\n    Mediana = ~round(median(.x, na.rm = TRUE),2),\n    Min = ~round(min(.x, na.rm = TRUE),2),\n    Max = ~round(max(.x, na.rm = TRUE),2),\n    SD = ~round(sd(.x, na.rm = TRUE),2))))\ndatatable(resumen)\n\n\n\n\n\nAlgunas funciones útiles son:\n\n\n\nCategoría\nFunciones\n\n\n\n\nCentralidad\nmean(), median()\n\n\nDispersión\nsd(), IQR(), mad()\n\n\nRango\nmin(), max()\n\n\nPosición\nfirst(), last(), nth()\n\n\nConteo\nn(), n_distinct()\n\n\nLógico\nany(), all()",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#eliminar-duplicados",
+    "href": "manipulacion_de_datos.html#eliminar-duplicados",
+    "title": "3  Manipulación de datos",
+    "section": "3.10 Eliminar duplicados",
+    "text": "3.10 Eliminar duplicados\nEs útil cuando se dispone de una matriz de datos con filas repetidas y se desea conservar los casos únicos.\n\nBase_unique &lt;- unique(Base_select) # base\nBase_unique &lt;- Base_select %&gt;% distinct() # dplyr\ndatatable(Base_unique)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#eliminar-datos-faltantes",
+    "href": "manipulacion_de_datos.html#eliminar-datos-faltantes",
+    "title": "3  Manipulación de datos",
+    "section": "3.11 Eliminar datos faltantes",
+    "text": "3.11 Eliminar datos faltantes\nSe pueden eliminar las filas que contengan datos faltantes en al menos una de las columnas o en alguna columna en particular.\n\n# Eliminar las filas con al menos un NA\nBase_sinNA &lt;- Base_select[complete.cases(Base_select), ] # base\nBase_sinNA &lt;- Base_select %&gt;% na.omit() # dplyr\ndatatable(Base_sinNA)\n\n\n\n\n# Eliminar las filas con NA en una columna particular\nBase_sinNA_PTOTAL &lt;- Base_select[!is.na(Base_select$PTOTAL), ] # base\nBase_sinNA_PTOTAL &lt;- Base_select %&gt;% filter(!is.na(PTOTAL)) # dplyr\ndatatable(Base_sinNA_PTOTAL)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#familia-apply",
+    "href": "manipulacion_de_datos.html#familia-apply",
+    "title": "3  Manipulación de datos",
+    "section": "3.12 Familia apply",
+    "text": "3.12 Familia apply\nLa familia apply en R es un conjunto de funciones que permiten realizar operaciones eficientes sobre estructuras de datos como vectores, matrices, listas y data frames, evitando el uso de bucles explícitos. Estas funciones son ideales para aplicar operaciones de manera vectorizada y mejorar el rendimiento del código.\n\n\n\n\n\n\n\n\n\nFunción\nEntrada\nSalida\nUso Principal\n\n\n\n\napply\nMatriz\nVector/Matriz\nOperar sobre filas o columnas\n\n\nlapply\nLista o vector\nLista\nOperar sobre cada elemento\n\n\nsapply\nLista o vector\nVector/Matriz\nSimilar a lapply pero simplificando\n\n\nvapply\nLista o vector\nVector (tipo definido)\nVersión segura de sapply\n\n\ntapply\nVector y factores\nVector/Lista\nOperar sobre grupos definidos por factores\n\n\nmapply\nVarias listas/vectores\nLista/Vector\nAplicar funciones de manera paralela\n\n\n\n\napply\n\n\nmatriz &lt;- matrix(1:9, nrow = 3)\napply(matriz, MARGIN = 1, FUN = sum) # Suma por filas\n\n[1] 12 15 18\n\napply(matriz, MARGIN = 2, FUN = sum) # Suma por columnas\n\n[1]  6 15 24\n\n\n\nlapply\n\n\nlista &lt;- list(a = 1:5, b = 6:10)\nlapply(lista, mean) # Calcula la media de cada elemento\n\n$a\n[1] 3\n\n$b\n[1] 8\n\n\n\nsapply\n\n\nlista &lt;- list(a = 1:5, b = 6:10)\nsapply(lista, sum) # Calcula la suma de cada elemento y devuelve un vector\n\n a  b \n15 40 \n\n\n\nvapply\n\n\nlista &lt;- list(a = 1:5, b = 6:10)\nvapply(lista, sum, numeric(1)) # Calcula la suma de cada elemento con un tipo de salida definido\n\n a  b \n15 40 \n\n\n\ntapply\n\n\nvalores &lt;- c(1, 2, 3, 4, 5, 6)\ngrupo &lt;- factor(c(\"A\", \"B\", \"A\", \"B\", \"A\", \"B\"))\ntapply(valores, grupo, mean) # Calcula la media por grupo\n\nA B \n3 4 \n\n\n\nmapply\n\n\nmapply(sum, 1:5, 6:10) # Suma paralela de dos vectores\n\n[1]  7  9 11 13 15",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#transformar-la-estructrura-de-la-tabla-de-datos",
+    "href": "manipulacion_de_datos.html#transformar-la-estructrura-de-la-tabla-de-datos",
+    "title": "3  Manipulación de datos",
+    "section": "3.13 Transformar la estructrura de la tabla de datos",
+    "text": "3.13 Transformar la estructrura de la tabla de datos\nEs posible cambiar la estructura en la que se presenta la tabla de datos usando la función reshape del paquete base de R o las funciones pivot_wide y pivot_longer del paquete tidyr. La siguiente imagen ilustra el cambio y se muestra el ejemplo con la tabla longitudinal_data.\n\n\n\nTomado de: https://www.garrickadenbuie.com/project/tidyexplain/#spread-and-gather\n\n\n\n\n\n\n\n\n\nlibrary(tidyr)\n# Convertir a formato ancho\nformato_ancho &lt;- reshape( # base\n  longitudinal_data, # Datos\n  timevar = \"VISITA\", # Columna a pivotar\n  idvar = c(\"ID\"),  # Columnas que identifican cada fila única\n  direction = \"wide\") # Cambiar de largo a ancho\nnames(formato_ancho) &lt;- gsub(\"GLUCOSA\\\\.\", \"VISITA \", names(formato_ancho)) # Nombres de las nuevas columnas\n\nformato_ancho &lt;- longitudinal_data %&gt;% # tidyr\n  pivot_wider(\n    names_from = VISITA, # Columna a pivotar\n    names_prefix = \"VISITA \", # Prefijo para los nombres de las nuevas columnas\n    values_from = GLUCOSA) # Columna que llenará los valores\ndatatable(formato_ancho)\n\n\n\n\n\n\n# Convertir a formato largo\nformato_largo &lt;- formato_ancho %&gt;% # tidyr\n  pivot_longer(\n    cols = starts_with(\"VISITA\"),  # Columnas a pivotar\n    names_to = \"VISITA\", # Nueva columna para los nombres\n    values_to = \"GLUCOSA\") # Nueva columna para los valores\ndatatable(formato_largo)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#unir-tablas-de-datos",
+    "href": "manipulacion_de_datos.html#unir-tablas-de-datos",
+    "title": "3  Manipulación de datos",
+    "section": "3.14 Unir tablas de datos",
+    "text": "3.14 Unir tablas de datos\nPara ilustrar el funcionamiento, se crea una segunda tabla de datos llamada Base_facultades. Es importante tener en cuenta que para unir tablas es necesario tener una llave, es decir, una o varias variables (columnas) que permitan identificar cada fila sin ambiguedad de manera exclusiva presente en las tablas que se desean unir. En este caso, se empleara la variable FACULTAD.\n\nBase_facultades &lt;- data.frame(\n  FACULTAD = c(\"Ingeniería\", \"Medicina\", \"Ciencias humanas\", \"Arquitectura\",\"Administración\"),\n  CAMPUS = c(\"Central\", \"Norte\", \"Central\", \"Oeste\", \"Este\"),\n  DIRECTOR = c(\"Juan Pérez\", \"María Gómez\", \"Luis Torres\", \"Ana Ramírez\",\"Oscar Jimenez\"))\ndatatable(Base_facultades)\n\n\n\n\n\nA continuación se presentan la 4 formas de unir tablas de datos usando el paquete base, y Las funciones left_join(), right_join(), inner_join() y full_join() del paquete dplyr.\n\nleft_join(): mantiene todas las filas de la tabla izquierda (Base_select) y añade las columnas de la tabla de la derecha (Base_facultades) rellenando los campos correspondientes si hay datos, de lo contrario pone NA.\n\n\nleft_result &lt;- merge(Base_select, Base_facultades, by = \"FACULTAD\", all.x = TRUE) # base\nleft_result &lt;- left_join(Base_select, Base_facultades, by = \"FACULTAD\") # dplyr\ndatatable(left_result)\n\n\n\n\n\n\n\nright_join(): añade las columnas de la tabla de la derecha (Base_facultades) manteniendo las filas de la tabla izquierda (Base_select) que tiene información en dichas columnas.\n\n\nright_result &lt;- merge(Base_select, Base_facultades, by = \"FACULTAD\", all.y = TRUE) # base\nright_result &lt;- right_join(Base_select, Base_facultades, by = \"FACULTAD\") # dplyr\ndatatable(right_result)\n\n\n\n\n\n\n\ninner_join(): mantiene solo las filas con coincidencias en ambas tablas.\n\n\ninner_result &lt;- merge(Base_select, Base_facultades, by = \"FACULTAD\", all = FALSE) # base\ninner_result &lt;- inner_join(Base_select, Base_facultades, by = \"FACULTAD\") #dplyr\ndatatable(inner_result)\n\n\n\n\n\n\n\nfull_join(): Une todas las filas de ambas tablas, llenando con NA donde no haya coincidencias.\n\n\nfull_result &lt;- merge(Base_select, Base_facultades, by = \"FACULTAD\", all = TRUE) # base\nfull_result &lt;- full_join(Base_select, Base_facultades, by = \"FACULTAD\") # dplyr\ndatatable(full_result)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "manipulacion_de_datos.html#ejemplo-usando-dplyr",
+    "href": "manipulacion_de_datos.html#ejemplo-usando-dplyr",
+    "title": "3  Manipulación de datos",
+    "section": "3.15 Ejemplo usando dplyr",
+    "text": "3.15 Ejemplo usando dplyr\nUna ventaja de este paquete, es que permite aplicar múltiples funciones usando el operador pipe %&gt;%, lo cual reduce las líneas de código y simplifica la manipulación de las tablas de datos.\nSupongamos que se quiere:\n\nFiltrar a los estudiantes que tienen un puntaje total estándar (PTOTAL) mayor a 650.\nCrear una nueva columna que categorice a los estudiantes como “Alto” o “Bajo” en función de su puntaje total.\nAgrupar por facultad y calcular el promedio de PTOTAL por facultad, el número de aspirantes con puntaje “Alto” y el número total de aspirantes.\nOrdenar los resultados por el promedio de PTOTAL en orden descendente.\n\n\nlibrary(dplyr)\n\n# Filtrar, transformar y resumir la tabla\nresultado &lt;- Base_prueba_aspirantes %&gt;%\n  # 1. Filtrar estudiantes con PTOTAL &gt; 650\n  filter(PTOTAL &gt; 650) %&gt;%\n  # 2. Crear una nueva columna categorizando según PTOTAL\n  mutate(CATEGORIA = ifelse(PTOTAL &gt; 750, \"Alto\", \"Bajo\")) %&gt;%\n  # 3. Agrupar por facultad y calcular valores deseados\n  group_by(FACULTAD) %&gt;%\n  summarise(\n    PROMEDIO_PTOTAL = round(mean(PTOTAL, na.rm = TRUE),2),\n    PUNTAJE_ALTO = sum(CATEGORIA == \"Alto\"),\n    NUMERO_ESTUDIANTES = n()\n  ) %&gt;%\n  # 4. Ordenar por promedio de PTOTAL en orden descendente\n  arrange(desc(PROMEDIO_PTOTAL))\n\ndatatable(resultado)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Manipulación de datos</span>"
+    ]
+  },
+  {
+    "objectID": "visualizacion.html",
+    "href": "visualizacion.html",
+    "title": "4  Visualización de datos",
+    "section": "",
+    "text": "4.1 Gráficos univariados",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Visualización de datos</span>"
+    ]
+  },
+  {
+    "objectID": "visualizacion.html#gráficos-univariados",
+    "href": "visualizacion.html#gráficos-univariados",
+    "title": "4  Visualización de datos",
+    "section": "",
+    "text": "4.1.1 Variable categórica\n\n\n4.1.1.1 Gráfico de barras verticales\n\n# Paquete base\nconteo &lt;- table(Base_prueba_aspirantes$ESTRATO_ORIG) # Tabla de frecuencias\n\nbarplot(conteo, # Datos\n        main = \"Gráfico de barras por estrato\", # Título\n        xlab = \"\", ylab = \"Frecuencia\", # Títulos de los ejes\n        ylim = c(0, max(conteo)*1.1), # Rango del eje y\n        col = \"skyblue\", # Color de las barras\n        space = 1, # Espacio entre las barras\n        las = 2) # Orientación de las etiquetas del eje X\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nggplot(Base_prueba_aspirantes, aes(x = ESTRATO_ORIG)) + # Datos y ejes\n    geom_bar(fill = \"skyblue\", color = \"black\", width = 0.5) + # Configuración de las barras\n    labs(title = \"Gráfico de barras por estrato\", x = \"Estrato\", y = \"Frecuencia\") + # Títulos\n    theme_minimal() + # Tema\n    theme(axis.text.x = element_text(angle = 45, hjust = 1),\n          plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"top\") \n\n\n\n\n\n\n\n\n\n\n\n4.1.1.2 Gráfico de barras horizontales\n\n# Paquete base\nconteo &lt;- sort(table(Base_prueba_aspirantes$DEP_NAC), decreasing = FALSE) # Tabla de frecuencias ordenada\n\npar(mar = c(5, 12, 1, 5)) # Ajusta las márgenes\nbarplot_heights &lt;- barplot(conteo, # Datos\n        horiz = TRUE, # Barras horizontales\n        las = 1, # Orientación de las etiquetas del eje X\n        col = \"skyblue\", border = \"white\", # Configuración de las barras\n        main = \"Gráfico de barras por departamentos de nacimiento\", # Título\n        xlab = \"Frecuencia\", ylab = \"\", # Títulos de los ejes\n        xlim = c(0, max(conteo)*1.1), # Rango del eje X\n        cex.names = 0.5, # Ajusta tamaño de etiquetas\n        cex.axis = 0.8,  # Ajusta tamaño de ejes\n        cex.main = 1.1)  # Ajusta tamaño del título\ntext(x = conteo, # Etiquetas de la frecuencia\n     y = barplot_heights, # Altura correspondiente a las barras\n     labels = conteo, # Valores de frecuencia\n     cex = 0.6, # Tamaño de texto\n     pos = 4) # Posición del texto a la derecha\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;%\n    mutate(DEP_NAC = stringr::str_wrap(DEP_NAC, width = 30)) %&gt;% # Ajusta etiquetas largas con saltos de línea\n    count(DEP_NAC, sort = TRUE) %&gt;% # Conteo\n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(x = reorder(DEP_NAC, n), y = n)) + # Ejes\n    geom_bar(stat = \"identity\", fill = \"skyblue\") + # Configuración de las barras\n    geom_text(aes(label = round(n, 0)), hjust = -0.2, size = 3) + # Etiquetas del conteo\n    labs(title = \"Gráfico de barras por departamentos de nacimiento\", x = \"\", y = \"Frecuencia\") + # Títulos\n    scale_y_continuous(limits = c(0, max(conteo)*1.1)) + # Rango del eje X\n    coord_flip() + # Vuelve las barras horizontales\n    theme_minimal() + # Tema\n    theme(axis.text.y = element_text(angle = 0, hjust = 1, size = 6)) +\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"top\") \n\n\n\n\n\n\n\n\n\n\n\n4.1.1.3 Gráfico circular\n\n# Paquete base\nconteo &lt;- table(Base_prueba_aspirantes$SEXO) # Tabla de frecuencias\n\npie(conteo, # Datos\n    main = \"Gráfico circular por sexo\", # Título\n    col = c(\"skyblue\",\"plum\"), border= \"white\", # Colores\n    labels = paste(names(conteo), \":\", round(prop.table(conteo) * 100, 2), \"%\"), # Etiquetas\n    cex = 1.1) # Tamaño de las etiquetas\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;%\n    count(SEXO) %&gt;% # Conteo\n    mutate(percentage = n / sum(n) * 100) %&gt;% # Calculo del porcentaje\nggplot(aes(x = \"\", y = percentage, fill = SEXO)) + # Ejes\n    geom_bar(stat = \"identity\") + \n    coord_polar(\"y\") + # Convierte a coordenadas polares\n    geom_text(aes(label = paste0(round(percentage, 2), \"%\")), \n              position = position_stack(vjust = 0.5), size = 5) +  # Ajusta posición y tamaño de las etiquetas\n    labs(title = \"Gráfico circular por sexo\", fill = \"Sexo\") + # Títulos\n    scale_fill_manual(values = c(\"Hombres\" = \"skyblue\", \"Mujeres\" = \"plum\")) + # Colores\n    theme_void() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"right\") \n\n\n\n\n\n\n\n\n\n\n\n\n4.1.2 Variable cuantitativa\n\n\n4.1.2.1 Histograma\n\n# Paquete base\nhist(Base_prueba_aspirantes$PTOTAL, # Datos\n     main = \"Histograma del puntaje total\", # Título\n     xlab = \"Puntaje total\", ylab = \"Frecuencia\", # Título de los ejes\n     xlim = c(-20,1000), # Rango del eje X\n     col = \"skyblue\", border = \"white\") # Color de las barras\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;%\n    select(PTOTAL) %&gt;% \n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(x = PTOTAL)) + # Eje\n    geom_histogram(binwidth = 50, fill = \"skyblue\", color = \"white\") + # Configuración de las barras\n    labs(title = \"Histograma del puntaje total\", x = \"Puntaje total\", y = \"Frecuencia\") + # Títulos\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"right\")\n\n\n\n\n\n\n\n\n\n\n\n4.1.2.2 Gráfico de densidad\n\n# Paquete base\ndensidad_edad &lt;- density(Base_prueba_aspirantes$EDAD_MOD, na.rm = TRUE) # Calculo de la densidad\n\nplot(densidad_edad, # Datos\n     main = \"Gráfico de densidad de la edad de los aspirantes\", # Título\n     xlab = \"Edad\", ylab = \"Densidad\", # Títulos de los ejes\n     col = \"blue\",  # Color de la línea\n     lwd = 2, # Grosor de la línea\n     cex.main = 1.1, # Tamaño del título\n     cex.lab = 1, # Tamaño de las etiquetas de los ejes\n     cex.axis = 0.9) # Tamaño de los números en los ejes\npolygon(densidad_edad, col = \"skyblue\", border = \"blue\") # Agregar el área bajo la curva (relleno)\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;% \n    select(EDAD_MOD) %&gt;% \n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(x = EDAD_MOD)) + # Ejes\n    geom_density(fill = \"skyblue\", color = \"blue\", alpha = 1) +  # Densidad con relleno y borde\n    labs(title = \"Gráfico de densidad de la edad de los aspirantes\", x = \"Edad\", y = \"Densidad\") + # Títulos\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"), \n          axis.title = element_text(size = 12),                          \n          axis.text = element_text(size = 10))\n\n\n\n\n\n\n\n\n\n\n\n4.1.2.3 Boxplot\n\n# Paquete base\nboxplot(Base_prueba_aspirantes$PTOTAL, # Datos\n        main = \"Boxplot del puntaje total\", ylab = \"Puntaje total\", # Títulos\n        col = \"skyblue\", # Color de la caja\n        pch = 19, # Tipo de punto para los outliers\n        cex = 0.5) # Tamaño de los outliers\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;%\n    select(PTOTAL) %&gt;% \n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(y = PTOTAL)) + # Eje\n    geom_boxplot(fill = \"skyblue\", color = \"black\", # Configuración de la caja\n                 outlier.shape = 19) + # Configuración de datos atípicos\n    labs(title = \"Boxplot del puntaje total\", y = \"Puntaje total\") +\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"), \n          axis.title = element_text(size = 12),                          \n          axis.text = element_text(size = 10))",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Visualización de datos</span>"
+    ]
+  },
+  {
+    "objectID": "visualizacion.html#gráficos-multivariados",
+    "href": "visualizacion.html#gráficos-multivariados",
+    "title": "4  Visualización de datos",
+    "section": "4.2 Gráficos multivariados",
+    "text": "4.2 Gráficos multivariados\n\n\n4.2.1 Variables categóricas\n\n\n4.2.1.1 Gráfico de barras\n\n# Paquete base\nconteo &lt;- table(Base_prueba_aspirantes$SEXO,\n                factor(Base_prueba_aspirantes$CAT_EDAD,levels = rev(levels(Base_prueba_aspirantes$CAT_EDAD)))) # Tabla de frecuencias\n\npar(mar = c(5, 10, 4, 2))  # Ajusta las márgenes\nbar_positions &lt;- barplot(conteo, # Datos\n    beside = TRUE, # No apilar barras\n    horiz = TRUE, # Barras horizontales\n    col = c(\"skyblue\", \"plum\"), border = \"white\", # Colores de las barras\n    main = \"Gráfico de barras de los grupos de edad por sexo\", # Título\n    xlab = \"Frecuencia\", ylab = \"\", # Títulos de los ejes\n    xlim = c(0, max(conteo)*1.1), # Rango del eje X\n    las = 1, # Orientación de las etiquetas del eje Y\n    cex.main = 1.2, cex.lab = 1, cex.axis = 0.7, cex.names = 0.8, # Tamaños\n    legend.text = TRUE, # Incluir leyenda\n    args.legend = list(x = \"top\", # Posición de la leyenda\n                  title = \"\", horiz = TRUE,\n                  bty = \"n\", # Sin borde en la leyenda\n                  cex = 0.9, # Tamaño del texto de la leyenda\n                  inset = -0.15)) # Ajusta el espacio hacia abajo si es necesario\ntext(x = conteo, # Posición X\n     y = bar_positions,  # Posición en Y\n     labels = conteo, # Valores de frecuencia\n     cex = 0.6, pos = 4) # Tamaño y posición de las etiquetas\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;% \n    count(CAT_EDAD, SEXO, sort = TRUE) %&gt;% # Conteo\nggplot(aes(x = reorder(CAT_EDAD, n), y = n, fill = SEXO)) + # Ejes\n    geom_bar(stat = \"identity\", position = position_dodge(width = 0.9), width = 0.8) + # Configuración de las barras\n    geom_text(aes(label = round(n, 0)), position = position_dodge(width = 0.9), \n              hjust = -0.2, size = 2.5) + # Configuración de la etiquetas de conteo\n    labs(title = \"Gráfico de barras de los grupos de edad por sexo\", # Título\n         x = \"Grupo de edad\", y = \"Frecuencia\", fill = \"\") + # Títulos de los ejes\n    scale_fill_manual(values = c(\"Hombres\" = \"skyblue\", \"Mujeres\" = \"plum\")) + # Colores\n    coord_flip() + # Barras horizontales\n    theme_minimal() + # Tema\n    theme(axis.text.y = element_text(angle = 0, hjust = 1),\n          plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"top\")\n\n\n\n\n\n\n\n\nSi se desea contruir el gráfico con barras apiladas en lugar de barras paralelas, se debe ajustar el argumento beside = FALSE en la función barplot y ajustar la posición de las etiquetas. Por otro lado, usando ggplot se debe reemplazar position_dodge(width = 0.9) por position = \"stack\" en geom_bar y por position = position_stack(vjust = 0.5) en geom_text respectivamente.\n\n\n\n\n4.2.2 Variables continuas\n\n\n4.2.2.1 Gráfico de dispersión\n\n# Paquete base\nplot(iris$Sepal.Length, iris$Petal.Length, # Datos\n     main = \"Gráfico de dispersión entre Sepal.Length y Petal.Length\", # Título \n     xlab = \"Sepal.Length\", ylab = \"Petal.Length\", # Títulos de los ejes\n     pch = 16, cex = 1, col = \"skyblue\") # Tipo, tamaño y color de los puntos\nabline(lm(Petal.Length ~ Sepal.Length, data = iris), # Agrega la línea de regresión\n       col = \"black\", lwd = 1, lty = 2) # Color, grosor y tipo de la línea\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\niris %&gt;%\n    dplyr::select(Sepal.Length, Petal.Length) %&gt;%\n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(x = Sepal.Length, y = Petal.Length)) +\n    geom_point(color = \"skyblue\", alpha = 0.6) + # Configuración de los puntos\n    geom_smooth(method = \"lm\", color = \"black\", se = FALSE, size = 0.5, linetype = \"dashed\") + # Línea de regresión\n    labs(title = \"Gráfico de dispersión entre Sepal.Length y Petal.Length\", # Título\n         x = \"Sepal.Length\", y = \"Petal.Length\") + # Títulos de los ejes\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 16, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"top\") \n\n\n\n\n\n\n\n\n\n\n4.2.2.2 Matriz de correlación\n\nlibrary(corrplot)\n\niris %&gt;% select(1,2,3,4) %&gt;% cor() %&gt;% # Calculo de la matriz de correlación\ncorrplot.mixed(upper = \"circle\", # Triángulo superior\n         lower = \"number\", # Triángulo inferior\n         tl.col = \"black\", tl.cex = 0.8, # Color y tamaño de las etiquetas\n         upper.col = colorRampPalette(c(\"skyblue\", \"plum\"))(20), # Colores de los círculos\n         lower.col = colorRampPalette(c(\"skyblue\", \"plum\"))(20), # Colores de los números\n         title = \"Matriz de Correlación\", # Título\n         mar = c(0, 0, 1, 0)) # Márgenes\n\n\n\n\n\n\n\n\n\n\n4.2.2.3 Gráfico de serie temporal\n\n# Paquete base\nconteo &lt;- table(Base_prueba_aspirantes$YEAR) # Conteo por año\n\nplot(names(conteo), conteo, \n     type = \"b\", col = \"skyblue\", pch = 19, cex = 1, lwd = 2,  # Configuración de puntos y líneas\n     main = \"Serie de tiempo anual\", xlab = \"Año\", ylab = \"Número de aspirantes\", # Títulos\n     ylim = c(0, max(conteo)*1.1), xaxt = \"n\") # Rango del eje Y\naxis(1, names(conteo), las = 2)  # Ajusta las etiquetas del eje X\naxis(2, seq(from = 0, to = 350, by = 50), las = 1)  # Ajusta las etiquetas del eje Y\ntext(names(conteo), conteo, labels = conteo, pos = 3, col = \"black\", cex = 0.8) # Agrega etiquetas a cada punto\n\n\n\n\n\n\n\n\n\n# ggplot\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;% \n    group_by(YEAR) %&gt;% count() %&gt;% # Conteo por año\nggplot(aes(x = YEAR, y = n)) + # Ejes\n    geom_line(color = \"skyblue\", size = 1) +  # Línea de la serie de tiempo\n    geom_point(color = \"skyblue\", size = 2) + # Puntos en cada fecha\n    geom_text(aes(label = n), vjust = -1, color = \"black\", size = 3) +  # Etiquetas en cada punto\n    labs(title = \"Serie de tiempo anual\", x = \"Año\", y = \"Número de aspirantes\") + # Títulos\n    scale_y_continuous(limits = c(0, max(conteo)*1.1)) + # Rango del eje Y\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"))\n\n\n\n\n\n\n\n\n\n\n\n\n4.2.3 Variables categóricas y continuas\n\n\n4.2.3.1 Gráfico de densidades\n\n# ggplot\nlibrary(ggplot2)\nMedias &lt;- Base_prueba_aspirantes %&gt;% \n    group_by(ESTRATO) %&gt;% \n    summarize(mean_ptotal = mean(PTOTAL, na.rm = TRUE), n = n()) # Calcula la media y el número de observaciones\nBase_prueba_aspirantes %&gt;%\n    select(PTOTAL, ESTRATO) %&gt;% \n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(x = PTOTAL, fill = factor(ESTRATO))) + # Ejes\n    geom_density(alpha = 0.6) + # Densidades con transparencia\n    geom_vline(data = Medias, aes(xintercept = mean_ptotal), \n               linetype = \"dotted\", color = \"skyblue\", size = 1) + # Líneas verticales para la media\n    geom_label(data = Medias, \n               aes(x = mean_ptotal, y = 0, label = paste(\"Promedio:\", round(mean_ptotal, 0), \" - # Obs:\", n)), \n               angle = 0,  color = \"skyblue\", fill = \"white\", size = 3, label.padding = unit(0.2, \"lines\")) + # Etiquetas\n    labs(title = \"Gráfico de densidades del puntaje total por estrato\", # Título\n         x = \"Puntaje Total\", y = \"Densidad\", fill = \"Estrato\") + # Títulos de los ejes\n    scale_fill_brewer(palette = \"Set2\") + # Paleta de colores\n    facet_wrap(~ESTRATO, scales = \"free\") + # Separar distribuciones\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          plot.subtitle = element_text(hjust = 0.5, size = 12),\n          legend.position = \"top\") \n\n\n\n\n\n\n\n\nPor supuesto, en este caso es posible reemplazar el gráfico de densidades por otro tipo de gráficos, por ejemplo, histogramas.\n\n\n4.2.3.2 Boxplot\n\n# Paleta de colores\nlibrary(paletteer)\n# Paquete base\ndatos &lt;- na.omit(Base_prueba_aspirantes[, c(\"INS_SEDE_NOMBRE\", \"PTOTAL\")]) # Selecciona variables y elimina datos faltantes\n\nboxplot(PTOTAL ~ INS_SEDE_NOMBRE, # Fórmula &gt; v. cuantitativa ~ v. cualitativa\n        data = datos,\n        main = \"Boxplot del puntaje total por sede de inscripción\",  # Título\n        xlab = \"Sede\", ylab = \"Puntaje total\", # Títulos de los ejes\n        col = paletteer_d(\"ggsci::blue_material\"), border = \"black\", # Colores de las cajas\n        outline = TRUE, outcol = \"black\", outpch = 8, cex = 0.5, # Configuración de los valores atípicos\n        las = 2, cex.axis = 0.7) # Configuración de los ejes\nmeans &lt;- tapply(datos$PTOTAL, datos$INS_SEDE_NOMBRE, mean, na.rm = TRUE) # Calcula la media de cada boxplot\npoints(1:length(means), means, pch = 23, bg = \"white\", cex = 1.2)  # Punto de la media en blanco\n\n\n\n\n\n\n\n\n\nlibrary(ggplot2)\nBase_prueba_aspirantes %&gt;%\n    select(INS_SEDE_NOMBRE, PTOTAL) %&gt;% \n    drop_na() %&gt;% # Elimina datos faltantes\nggplot(aes(x = factor(INS_SEDE_NOMBRE), y = PTOTAL, fill = factor(INS_SEDE_NOMBRE))) +\n    geom_boxplot(alpha = 0.7, outlier.color = \"black\", outlier.shape = 8, outlier.size = 0.5) +  # Boxplot con valores atípicos\n    stat_summary(fun = \"mean\", geom = \"point\", shape = 23, size = 2, fill = \"white\") +  # Mostrar la media\n    scale_fill_manual(values = paletteer_d(\"ggsci::blue_material\")) +  # Paleta de colores\n    labs(title = \"Boxplot del puntaje potal por sede de inscripción\", # Título\n         x = \"Sede\", y = \"Puntaje total\", fill = \"Sede\") + # Título de los ejes\n    theme_minimal() + # Tema\n    theme(plot.title = element_text(hjust = 0.5, size = 14, face = \"bold\"),\n          axis.text.x = element_text(angle = 45, hjust = 1))",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Visualización de datos</span>"
+    ]
+  }
+]
